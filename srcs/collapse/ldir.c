@@ -33,7 +33,7 @@ static int	ldirpipe(char *file, t_fargs *info)
 	if (fd == -1)
 		return (ft_error("open: ", strerror(errno), "", 1));
 	dup2(fd, STDIN_FILENO);
-	rcode = collapse(info->ast_node, info->str, info->env, info->root_);
+	rcode = collapse_inpipe(info->ast_node, info->str, info->env, info->root_);
 	free_ac(info);
 	free(info);
 	return (rcode);
