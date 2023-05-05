@@ -47,7 +47,7 @@ t_fargs	*pack(t_btree *ast_node, char *str, t_map **env, t_btree *root_)
 	new->str = str;
 	new->env = env;
 	new->root_ = root_;
-	new->av = get_av(ast_node, str, *env);
+	new->av = get_av(ast_node);
 	new->ac = 0;
 	i = -1;
 	if (!new->av)
@@ -114,32 +114,73 @@ int	run_command(t_btree *ast_node, char *str, t_map **env, t_btree *root_)
 	return (e);
 }
 
+int	run_command_inpipe(t_btree *ast_node, char *str, t_map **env, t_btree *root_)
+{
+	t_fargs	*info;
+	int		i;
+	int		e;
+
+	e = 1;
+	info = pack(ast_node, str, env, root_);
+	if (!info->ac)
+	{
+		free(info);
+		return (0);
+	}
+	i = getfpos(info->av[0]);
+	if (i == 0)
+		e = f_exec_inpipe(info);
+	if (i == 1)
+		e = f_echo(info);
+	if (i == 2)
+		e = f_cd(info);
+	if (i == 3)
+		e = f_pwd(info);
+	if (i == 4)
+		e = f_env(info);
+	if (i == 5)
+		e = f_exit(info);
+	if (i == 6)
+		e = f_unset(info);
+	if (i == 7)
+		e = f_export(info);
+	free_ac(info);
+	free(info);
+	return (e);
+}
+
 int	collapse(t_btree *root, char *str, t_map **env, t_btree *root_)
 {
 	int	e;
 
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
-	if (root->token == T_COMMAND)
+	if (root->token == T_ROOT)
+		return (collapse(root->left, str, env, root_));
+	else if (root->token == T_COMMAND)
 		return (run_command(root, str, env, root_));
 	else if (root->token == T_PIPE)
 		return (run_pipe(root, str, env, root_));
 	else if (root->token >= T_LEFTRDIR && root->token <= T_RAPPEND)
 		return (run_redir(root, str, env, root_));
 	else
-	{
-		if (root->left)
-		{
-			e = collapse(root->left, str, env, root_);
-			if (e != 0)
-				return (e);
-		}
-		if (root->right)
-		{
-			e = collapse(root->right, str, env, root_);
-			if (e != 0)
-				return (e);
-		}
-	}
+		return (ft_error("Parsing exception?", "", "", 1));
+	return (e);
+}
+
+int	collapse_inpipe(t_btree *root, char *str, t_map **env, t_btree *root_)
+{
+	int	e;
+
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+	if (root->token == T_COMMAND)
+		return (run_command_inpipe(root, str, env, root_));
+	else if (root->token == T_PIPE)
+		return (run_pipe(root, str, env, root_));
+	else if (root->token >= T_LEFTRDIR && root->token <= T_RAPPEND)
+		return (run_redir(root, str, env, root_));
+	else
+		return (ft_error("Parsing exception?", "", "", 1));
 	return (e);
 }

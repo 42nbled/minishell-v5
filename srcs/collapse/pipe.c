@@ -25,7 +25,7 @@ static int	leftpipe(t_btree *ast_node, char *str, int *pipes,
 		dup2(pipes[1], STDOUT_FILENO);
 		close(pipes[0]);
 		close(pipes[1]);
-		rcode = (collapse(ast_node->left, str, env, root_));
+		rcode = (collapse_inpipe(ast_node->left, str, env, root_));
 		free_map(*env);
 		btree_clear(root_);
 		free(str);
@@ -47,7 +47,7 @@ static int	rightpipe(t_btree *ast_node, char *str, int *pipes,
 		dup2(pipes[0], STDIN_FILENO);
 		close(pipes[1]);
 		close(pipes[0]);
-		rcode = (collapse(ast_node->right, str, env, root_));
+		rcode = (collapse_inpipe(ast_node->right, str, env, root_));
 		free_map(*env);
 		btree_clear(root_);
 		free(str);
@@ -71,6 +71,18 @@ static int	closewait(int *pipes, int *pid)
 	if (WIFEXITED(left_status))
 		if (WEXITSTATUS(left_status))
 			return (WEXITSTATUS(left_status));
+	if (WIFSIGNALED(left_status) && WTERMSIG(left_status) == SIGINT)
+		return (130);
+	if (WIFSIGNALED(right_status) && WTERMSIG(right_status) == SIGINT)
+		return (130);
+	if (WIFSIGNALED(left_status) && WTERMSIG(left_status) == SIGQUIT)
+		return (131);
+	if (WIFSIGNALED(right_status) && WTERMSIG(right_status) == SIGQUIT)
+		return (131);
+	if (WIFSIGNALED(left_status) && WTERMSIG(left_status) == SIGSEGV)
+		return (ft_error("segmentation fault", "", "", 139));
+	if (WIFSIGNALED(right_status) && WTERMSIG(right_status) == SIGSEGV)
+		return (ft_error("segmentation fault", "", "", 139));
 	if (WIFEXITED(right_status))
 		if (WEXITSTATUS(right_status))
 			return (WEXITSTATUS(right_status));

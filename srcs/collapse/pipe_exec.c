@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec.c                                             :+:      :+:    :+:   */
+/*   pipe_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/03 23:13:21 by cde-sede          #+#    #+#             */
-/*   Updated: 2023/05/05 22:22:43 by cde-sede         ###   ########.fr       */
+/*   Created: 2023/05/05 22:06:31 by cde-sede          #+#    #+#             */
+/*   Updated: 2023/05/05 22:11:25 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,52 +72,25 @@ static void	free_environ(char **environ)
 	free(environ);
 }
 
-static	int	wait_exec(int pid)
-{
-	int	status;
-
-	if (waitpid(pid, &status, 0) == -1)
-		return (1);
-	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
-		return (130);
-	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
-		return (131);
-	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGSEGV)
-		return (ft_error("segmentation fault", "", "", 139));
-	else if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
-	else
-		return (status);
-	return (0);
-}
-
-int	f_exec(t_fargs *info)
+int	f_exec_inpipe(t_fargs *info)
 {
 	char	**environ;
-	int		pid;
 	int		i;
 
 	pack__(&info);
-	pid = fork();
-	if (pid == 0)
+	signal(SIGINT, exitfree);
+	signal(SIGQUIT, SIG_IGN);
+	environ = export(*(info->env));
+	i = cmdpath(info->ac, info->av, info->env);
+	if (i)
 	{
-		signal(SIGINT, exitfree);
-		signal(SIGQUIT, SIG_IGN);
-		environ = export(*(info->env));
-		i = cmdpath(info->ac, info->av, info->env);
-		if (i)
-		{
-			free_pack(info);
-			free_environ(environ);
-			exit(i);
-		}
-		execve(info->av[0], info->av, environ);
-		ft_error("execve: ", strerror(errno), NULL, 1);
 		free_pack(info);
 		free_environ(environ);
-		i = -1;
-		exit(1);
+		exit(i);
 	}
-	printf("pid: %d\n", pid);
-	return (wait_exec(pid));
+	execve(info->av[0], info->av, environ);
+	ft_error("execve: ", strerror(errno), NULL, 1);
+	free_pack(info);
+	free_environ(environ);
+	return (1);
 }

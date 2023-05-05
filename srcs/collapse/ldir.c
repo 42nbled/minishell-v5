@@ -50,6 +50,7 @@ int	run_ldir(t_btree *ast_node, char *str, t_map **env, t_btree *root_)
 	{
 		rcode = 0;
 		file = getfilename(ast_node, str, env, root_);
+		printf("filename: %s\n", file);
 		if (ast_node->left)
 			rcode = ldirpipe(file, pack(ast_node->left, str, env, root_));
 		free(file);

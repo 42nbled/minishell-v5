@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbled <nbled@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:20:21 by nbled             #+#    #+#             */
-/*   Updated: 2023/05/04 16:25:21 by nbled            ###   ########.fr       */
+/*   Updated: 2023/05/05 22:56:27 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,5 @@ t_list	*lex_check(t_list *start)
 		ft_error("syntax error near unexpected token `", "|", "'", 2);
 		return (NULL);
 	}
-	last_ret(0, 1);
 	return (start);
 }

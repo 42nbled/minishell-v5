@@ -17,13 +17,18 @@ static int	closewait(int pid)
 	int	status;
 
 	if (waitpid(pid, &status, 0) == -1)
-		return (-2);
-	if (((status) & 0177) == 0)
-	{
-		if ((int)(((unsigned)(status) >> 8) & 0xff) != 0)
-			return ((int)(((unsigned)(status) >> 8) & 0xff) != 0);
-	}
-	return (-3);
+		return (1);
+	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+		return (130);
+	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
+		return (131);
+	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGSEGV)
+		return (ft_error("segmentation fault", "", "", 139));
+	else if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
+	else
+		return (status);
+	return (0);
 }
 
 int	run_redir(t_btree *ast_node, char *str, t_map **env, t_btree *root_)
@@ -38,6 +43,5 @@ int	run_redir(t_btree *ast_node, char *str, t_map **env, t_btree *root_)
 		pid = run_rrdir(ast_node, str, env, root_);
 	if (ast_node->token == T_LEFTHRDC)
 		pid = run_heredoc(ast_node, str, env, root_);
-	closewait(pid);
-	return (0);
+	return (closewait(pid));
 }

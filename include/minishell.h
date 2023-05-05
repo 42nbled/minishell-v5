@@ -75,6 +75,8 @@ int				f_env(t_fargs *info);
 // srcs/builtins/exec.c
 int				f_exec(t_fargs *info);
 
+int				f_exec_inpipe(t_fargs *info);
+
 // srcs/builtins/exit.c
 int				f_exit(t_fargs *info);
 
@@ -88,6 +90,7 @@ int				f_pwd(t_fargs *info);
 int				f_unset(t_fargs *info);
 
 // srcs/collapse/collapse.c
+int				collapse_inpipe(t_btree *root, char *str, t_map **env, t_btree *root_);
 t_fargs			*pack(t_btree *ast_node, char *str,
 					t_map **env, t_btree *root_);
 void			free_pack(t_fargs *info);
@@ -156,7 +159,7 @@ void			setshlvl(t_map *env);
 // srcs/env/str.c
 
 // srcs/env/str.c
-char			**get_av(t_btree *node, char *str, t_map *env);
+char			**get_av(t_btree *node);
 void			case_tword(t_list *t, char *str, char ***buffer, int i);
 void			case_tsquote(t_list **t, char *str, char ***buffer, int i);
 void			case_tenv(t_list **t, char *str, char ***buffer,

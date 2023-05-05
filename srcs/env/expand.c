@@ -39,12 +39,15 @@ char	*extract_value(char *s, t_map *env)
 	if (delim <= 0)
 		return (ft_strdup("$"));
 	if (delim == 2)
+	{
+		printf("last ret %d\n", last_ret(0, 0));
 		value = ft_itoa(last_ret(0, 0));
+	}
 	else
 	{
 		key = ft_substr(s, 1, delim);
 		value = ft_strdup(get_env(key, env));
-//		printf("get %s=%s\n", key, value);
+		printf("get %s=%s\n", key, value);
 		free(key);
 		delim++;
 	}

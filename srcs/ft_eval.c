@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_eval.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbled <nbled@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:34:55 by nbled             #+#    #+#             */
-/*   Updated: 2023/05/04 16:37:10 by nbled            ###   ########.fr       */
+/*   Updated: 2023/05/05 22:50:04 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_btree	*ft_parse(t_list	*l_start)
+t_btree	*ft_parse(t_list *l_start)
 {
 	t_btree			*root;
 	t_base_result	result;
@@ -89,7 +89,6 @@ int	ft_eval(char *str, t_map **env)
 	}
 	show_btree(root, 0, str);
 	error = collapse(root, str, env, root);
-	error = 0;
 	btree_clear(root);
 	return (error);
 }
