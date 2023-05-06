@@ -90,21 +90,20 @@ int				f_pwd(t_fargs *info);
 int				f_unset(t_fargs *info);
 
 // srcs/collapse/collapse.c
-int				collapse_inpipe(t_btree *root, char *str, t_map **env, t_btree *root_);
-t_fargs			*pack(t_btree *ast_node, char *str,
-					t_map **env, t_btree *root_);
+t_fargs			*pack(t_btree *ast_node, t_map **env, t_btree *root_);
 void			free_pack(t_fargs *info);
 void			free_ac(t_fargs *info);
-int				run_command(t_btree *ast_node, char *str,
-					t_map **env, t_btree *root_);
-int				collapse(t_btree *root, char *str, t_map **env, t_btree *root_);
+int				run_command(t_btree *ast_node, t_map **env, t_btree *root_);
+int				collapse(t_btree *root, t_map **env, t_btree *root_);
 
 // srcs/collapse/ldir.c
-int				run_ldir(t_btree *ast_node, char *str,
+int				run_ldir(t_btree *ast_node, t_map **env, t_btree *root_);
+int				run_ldir_inredir(t_btree *ast_node,
 					t_map **env, t_btree *root_);
 
 // srcs/collapse/heredoc.c
-int				run_heredoc(t_btree *ast_node, char *str,
+int				run_heredoc(t_btree *ast_node, t_map **env, t_btree *root_);
+int				run_heredoc_inredir(t_btree *ast_node,
 					t_map **env, t_btree *root_);
 
 // srcs/collapse/path.c
@@ -112,17 +111,22 @@ int				ft_find_cmd_path(char *cmd, char **path, char **result);
 char			**exportpath(t_map *env);
 
 // srcs/collapse/pipe.c
-int				run_pipe(t_btree *ast_node, char *str,
+int				run_pipe(t_btree *ast_node, t_map **env, t_btree *root_);
+int				run_pipe_inredir(t_btree *ast_node,
 					t_map **env, t_btree *root_);
 
+
 // srcs/collapse/rdir.c
-int				run_rdir(t_btree *ast_node, char *str,
+int				run_rdir(t_btree *ast_node, t_map **env, t_btree *root_);
+int				run_rrdir(t_btree *ast_node, t_map **env, t_btree *root_);
+int				run_rdir_inredir(t_btree *ast_node,
 					t_map **env, t_btree *root_);
-int				run_rrdir(t_btree *ast_node, char *str,
+int				run_rrdir_inredir(t_btree *ast_node,
 					t_map **env, t_btree *root_);
 
 // srcs/collapse/redirections.c
-int				run_redir(t_btree *ast_node, char *str,
+int				run_redir(t_btree *ast_node, t_map **env, t_btree *root_);
+int				run_redir_inredir(t_btree *ast_node,
 					t_map **env, t_btree *root_);
 
 // srcs/env/creation.c

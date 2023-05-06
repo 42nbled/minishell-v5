@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_expand.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbled <nbled@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 23:15:54 by nbled             #+#    #+#             */
-/*   Updated: 2023/05/04 16:17:27 by nbled            ###   ########.fr       */
+/*   Updated: 2023/05/06 23:45:34 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ t_list	*ft_expand_env(t_list *l_start, char *str, t_map **env)
 	last = ft_lstlast(ptr);
 	ft_lstlast(ptr)->next = l_start->next;
 	l_start->next = ptr;
+	free(tmp);
 	return (last);
 }
 

@@ -45,7 +45,7 @@ void	print_lst_intree(t_list *node, char *str)
 	else if (node->start != -1)
 		printf("[%.*s]", node->len, str + node->start);
 	else
-		printf("[]");
+		printf("[NULL]");
 	if (!node->next)
 		printf("\n");
 	if (node->next)

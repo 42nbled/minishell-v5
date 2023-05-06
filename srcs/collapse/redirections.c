@@ -31,17 +31,33 @@ static int	closewait(int pid)
 	return (0);
 }
 
-int	run_redir(t_btree *ast_node, char *str, t_map **env, t_btree *root_)
+int	run_redir(t_btree *ast_node, t_map **env, t_btree *root_)
 {
 	int	pid;
 
 	if (ast_node->token == T_LEFTRDIR)
-		pid = run_ldir(ast_node, str, env, root_);
+		pid = run_ldir(ast_node, env, root_);
 	if (ast_node->token == T_RIGHTRDIR)
-		pid = run_rdir(ast_node, str, env, root_);
+		pid = run_rdir(ast_node, env, root_);
 	if (ast_node->token == T_RAPPEND)
-		pid = run_rrdir(ast_node, str, env, root_);
+		pid = run_rrdir(ast_node, env, root_);
 	if (ast_node->token == T_LEFTHRDC)
-		pid = run_heredoc(ast_node, str, env, root_);
+		pid = run_heredoc(ast_node, env, root_);
 	return (closewait(pid));
 }
+
+int	run_redir_inredir(t_btree *ast_node, t_map **env, t_btree *root_)
+{
+	int	pid;
+
+	if (ast_node->token == T_LEFTRDIR)
+		pid = run_ldir_inredir(ast_node, env, root_);
+	if (ast_node->token == T_RIGHTRDIR)
+		pid = run_rdir_inredir(ast_node, env, root_);
+	if (ast_node->token == T_RAPPEND)
+		pid = run_rrdir_inredir(ast_node, env, root_);
+	if (ast_node->token == T_LEFTHRDC)
+		pid = run_heredoc_inredir(ast_node, env, root_);
+	return (closewait(pid));
+}
+

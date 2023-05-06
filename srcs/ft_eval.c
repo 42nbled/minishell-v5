@@ -6,7 +6,7 @@
 /*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:34:55 by nbled             #+#    #+#             */
-/*   Updated: 2023/05/05 22:50:04 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/06 23:32:08 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,15 @@ int	ft_eval(char *str, t_map **env)
 
 	l_start = ft_lex(str);
 	if (!l_start)
+	{
+		free(str);
 		return (1);
+	}
 	if (is_something(l_start) == 0)
+	{
+		free(str);
 		return (0);
+	}
 	l_start = ft_expand(l_start, str, env);
 	ft_expand_join(&l_start);
 	if (!l_start)
@@ -88,7 +94,8 @@ int	ft_eval(char *str, t_map **env)
 		return (2);
 	}
 	show_btree(root, 0, str);
-	error = collapse(root, str, env, root);
+	free(str);
+	error = collapse(root, env, root);
 	btree_clear(root);
 	return (error);
 }

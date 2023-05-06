@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbled <nbled@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 17:16:29 by nbled             #+#    #+#             */
-/*   Updated: 2023/05/04 16:35:20 by nbled            ###   ########.fr       */
+/*   Updated: 2023/05/06 23:08:30 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ static int	routine(t_map **env)
 		if (*str)
 			add_history(str);
 		last_ret(ft_eval(str, env), 1);
-		free(str);
 	}
 	free_map(*env);
 	return (last_ret(0, 0));

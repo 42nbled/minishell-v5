@@ -57,6 +57,8 @@ typedef enum e_token
 	T_PATH,
 	T_ERROR,
 	T_OK,
+	S_PIPE,
+	S_RDIR,
 }		t_token;
 
 typedef struct s_list
@@ -94,7 +96,6 @@ typedef struct s_fargs
 	int		ac;
 	char	**av;
 	t_btree	*ast_node;
-	char	*str;
 	t_map	**env;
 	t_btree	*root_;
 }	t_fargs;

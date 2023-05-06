@@ -12,13 +12,13 @@
 
 #include "minishell.h"
 
-static char	*get_delim(t_btree *node, char *str, t_map **env, t_btree *root_)
+static char	*get_delim(t_btree *node, t_map **env, t_btree *root_)
 {
 	t_fargs	*info;
 	char	*file;
 	t_list	*tmp;
 
-	info = pack(node->right, str, env, root_);
+	info = pack(node->right, env, root_);
 	file = ft_strdup(info->av[0]);
 	free_ac(info);
 	free(info);
@@ -118,13 +118,13 @@ static int	herepipe(char *file, t_fargs *info)
 		return (ft_error("open: ", strerror(errno), "", 1));
 	dup2(fd, STDIN_FILENO);
 	close(fd);
-	rcode = collapse(info->ast_node, info->str, info->env, info->root_);
+	rcode = collapse(info->ast_node, info->env, info->root_);
 	free_ac(info);
 	free(info);
 	return (rcode);
 }
 
-int	run_heredoc(t_btree *ast_node, char *str, t_map **env, t_btree *root_)
+int	run_heredoc(t_btree *ast_node, t_map **env, t_btree *root_)
 {
 	int		i;
 	char	*file;
@@ -135,16 +135,38 @@ int	run_heredoc(t_btree *ast_node, char *str, t_map **env, t_btree *root_)
 	if (i == 0)
 	{
 		file = heredoc_path();
-		delim = get_delim(ast_node, str, env, root_);
+		delim = get_delim(ast_node, env, root_);
 		rcode = 1;
-		show_btree(root_, 0, str);
 		if (!open_heredoc(file, delim))
-			rcode = herepipe(file, pack(ast_node->left, str, env, root_));
+			rcode = herepipe(file, pack(ast_node->left, env, root_));
 		free(file);
 		free(delim);
 		free_map(*env);
 		btree_clear(root_);
-		free(str);
+		exit(rcode);
+	}	
+	return (i);
+}
+
+int	run_heredoc_inredir(t_btree *ast_node, t_map **env, t_btree *root_)
+{
+	int		i;
+	char	*file;
+	char	*delim;
+	int		rcode;
+
+	i = fork();
+	if (i == 0)
+	{
+		file = heredoc_path();
+		delim = get_delim(ast_node, env, root_);
+		rcode = 1;
+		if (!open_heredoc(file, delim))
+			rcode = collapse(ast_node, env, root_);
+		free(file);
+		free(delim);
+		free_map(*env);
+		btree_clear(root_);
 		exit(rcode);
 	}	
 	return (i);

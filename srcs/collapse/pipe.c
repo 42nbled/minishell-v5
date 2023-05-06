@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static int	leftpipe(t_btree *ast_node, char *str, int *pipes,
+static int	leftpipe(t_btree *ast_node, int *pipes,
 	t_map **env, t_btree *root_)
 {
 	int	i;
@@ -25,16 +25,15 @@ static int	leftpipe(t_btree *ast_node, char *str, int *pipes,
 		dup2(pipes[1], STDOUT_FILENO);
 		close(pipes[0]);
 		close(pipes[1]);
-		rcode = (collapse_inpipe(ast_node->left, str, env, root_));
+		rcode = (collapse(ast_node->left, env, root_));
 		free_map(*env);
 		btree_clear(root_);
-		free(str);
 		exit(rcode);
 	}
 	return (i);
 }
 
-static int	rightpipe(t_btree *ast_node, char *str, int *pipes,
+static int	rightpipe(t_btree *ast_node, int *pipes,
 	t_map **env, t_btree *root_)
 {
 	int	i;
@@ -47,13 +46,26 @@ static int	rightpipe(t_btree *ast_node, char *str, int *pipes,
 		dup2(pipes[0], STDIN_FILENO);
 		close(pipes[1]);
 		close(pipes[0]);
-		rcode = (collapse_inpipe(ast_node->right, str, env, root_));
+		rcode = (collapse(ast_node->right, env, root_));
 		free_map(*env);
 		btree_clear(root_);
-		free(str);
 		exit(rcode);
 	}
 	return (i);
+}
+
+static int	check_sig(int status)
+{
+	if (WIFEXITED(status))
+		if (WEXITSTATUS(status))
+			return (WEXITSTATUS(status));
+	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+		return (130);
+	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
+		return (131);
+	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGSEGV)
+		return (ft_error("segmentation fault", "", "", 139));
+	return (0);
 }
 
 static int	closewait(int *pipes, int *pid)
@@ -67,29 +79,14 @@ static int	closewait(int *pipes, int *pid)
 		return (1);
 	if (waitpid(pid[0], &right_status, 0) == -1)
 		return (1);
-		// Clear here using macros, WIFEXITED and WEXITSTATUS
-	if (WIFEXITED(left_status))
-		if (WEXITSTATUS(left_status))
-			return (WEXITSTATUS(left_status));
-	if (WIFSIGNALED(left_status) && WTERMSIG(left_status) == SIGINT)
-		return (130);
-	if (WIFSIGNALED(right_status) && WTERMSIG(right_status) == SIGINT)
-		return (130);
-	if (WIFSIGNALED(left_status) && WTERMSIG(left_status) == SIGQUIT)
-		return (131);
-	if (WIFSIGNALED(right_status) && WTERMSIG(right_status) == SIGQUIT)
-		return (131);
-	if (WIFSIGNALED(left_status) && WTERMSIG(left_status) == SIGSEGV)
-		return (ft_error("segmentation fault", "", "", 139));
-	if (WIFSIGNALED(right_status) && WTERMSIG(right_status) == SIGSEGV)
-		return (ft_error("segmentation fault", "", "", 139));
-	if (WIFEXITED(right_status))
-		if (WEXITSTATUS(right_status))
-			return (WEXITSTATUS(right_status));
+	if (check_sig(left_status))
+		return (check_sig(left_status));
+	if (check_sig(right_status))
+		return (check_sig(right_status));
 	return (0);
 }
 
-int	run_pipe(t_btree *ast_node, char *str, t_map **env, t_btree *root_)
+int	run_pipe(t_btree *ast_node, t_map **env, t_btree *root_)
 {
 	int	pipes[2];
 	int	child[2];
@@ -98,7 +95,7 @@ int	run_pipe(t_btree *ast_node, char *str, t_map **env, t_btree *root_)
 		return (2);
 	if (!ast_node->left)
 		return (3);
-	child[0] = leftpipe(ast_node, str, pipes, env, root_);
-	child[1] = rightpipe(ast_node, str, pipes, env, root_);
+	child[0] = leftpipe(ast_node, pipes, env, root_);
+	child[1] = rightpipe(ast_node, pipes, env, root_);
 	return (closewait(pipes, child));
 }

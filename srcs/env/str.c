@@ -12,6 +12,16 @@
 
 #include "minishell.h"
 
+static char **no_right(t_btree *node)
+{
+	char	**result;
+
+	result = malloc(sizeof(char *) * 2);
+	result[0] = ft_strdup(((t_list*)node->left->data)->str);
+	result[1] = NULL;
+	return (result);
+}
+
 char	**get_av(t_btree *node)
 {
 	char	**result;
@@ -22,12 +32,7 @@ char	**get_av(t_btree *node)
 		return (NULL);
 	i = 0;
 	if (!node->right)
-	{
-		result = malloc(sizeof(char *) * 2);
-		result[0] = ft_strdup(((t_list*)node->left->data)->str);
-		result[1] = NULL;
-		return (result);
-	}
+		return (no_right(node));
 	tmp = (t_list*)node->right->data;
 	while (tmp && ++i)
 		tmp = tmp->next;
@@ -36,7 +41,10 @@ char	**get_av(t_btree *node)
 	tmp = (t_list*)node->right->data;
 	while (tmp && ++i)
 	{
-		result[i] = ft_strdup(tmp->str);
+		if (tmp->str)
+			result[i] = ft_strdup(tmp->str);
+		else
+			result[i] = ft_strdup("");
 		tmp = tmp->next;
 	}
 	result[i + 1] = NULL;

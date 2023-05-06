@@ -6,13 +6,13 @@
 /*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 23:13:21 by cde-sede          #+#    #+#             */
-/*   Updated: 2023/05/05 22:22:43 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/06 23:27:10 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	cmdpath(int ac, char **av, t_map **env)
+static int	cmdpath(char **av, t_map **env)
 {
 	char	*result;
 	char	*tmp;
@@ -20,7 +20,6 @@ static int	cmdpath(int ac, char **av, t_map **env)
 	int		i;
 	int		code;
 
-	(void)ac;
 	tmp = ft_strdup(av[0]);
 	path = exportpath(*env);
 	result = NULL;
@@ -104,7 +103,7 @@ int	f_exec(t_fargs *info)
 		signal(SIGINT, exitfree);
 		signal(SIGQUIT, SIG_IGN);
 		environ = export(*(info->env));
-		i = cmdpath(info->ac, info->av, info->env);
+		i = cmdpath(info->av, info->env);
 		if (i)
 		{
 			free_pack(info);
@@ -118,6 +117,5 @@ int	f_exec(t_fargs *info)
 		i = -1;
 		exit(1);
 	}
-	printf("pid: %d\n", pid);
 	return (wait_exec(pid));
 }

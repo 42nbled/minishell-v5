@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstclear.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbled <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 08:20:02 by nbled             #+#    #+#             */
-/*   Updated: 2023/02/23 08:20:04 by nbled            ###   ########.fr       */
+/*   Updated: 2023/05/06 23:48:51 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,24 +27,3 @@ void	ft_lstclear(t_list *start)
 		ptr = tmp;
 	}
 }
-
-/*
-	export a="cho lel"
-
-	[export][ ][a=]["][cho][ ][lel]["]
-	
-	e$a
-	[e][$a]
-
-	av
-		echo
-		lel
-		NULL
-	
-
-	e"$a"
-
-	av
-		echo lel
-		NULL
-*/

@@ -37,14 +37,13 @@ static int	getfpos(char *left)
 	return (rvalue);
 }
 
-t_fargs	*pack(t_btree *ast_node, char *str, t_map **env, t_btree *root_)
+t_fargs	*pack(t_btree *ast_node, t_map **env, t_btree *root_)
 {
 	t_fargs	*new;
 	int		i;
 
 	new = malloc(sizeof(t_fargs));
 	new->ast_node = ast_node;
-	new->str = str;
 	new->env = env;
 	new->root_ = root_;
 	new->av = get_av(ast_node);
@@ -62,7 +61,6 @@ void	free_pack(t_fargs *info)
 {
 	free_map(*(info->env));
 	btree_clear(info->root_);
-	free(info->str);
 	if (!info->av)
 		return ;
 	free_ac(info);
@@ -79,14 +77,14 @@ void	free_ac(t_fargs *info)
 	free(info->av);
 }
 
-int	run_command(t_btree *ast_node, char *str, t_map **env, t_btree *root_)
+int	run_command(t_btree *ast_node, t_map **env, t_btree *root_)
 {
 	t_fargs	*info;
 	int		i;
 	int		e;
 
 	e = 1;
-	info = pack(ast_node, str, env, root_);
+	info = pack(ast_node, env, root_);
 	if (!info->ac)
 	{
 		free(info);
@@ -114,14 +112,14 @@ int	run_command(t_btree *ast_node, char *str, t_map **env, t_btree *root_)
 	return (e);
 }
 
-int	run_command_inpipe(t_btree *ast_node, char *str, t_map **env, t_btree *root_)
+int	run_command_inpipe(t_btree *ast_node, t_map **env, t_btree *root_)
 {
 	t_fargs	*info;
 	int		i;
 	int		e;
 
 	e = 1;
-	info = pack(ast_node, str, env, root_);
+	info = pack(ast_node, env, root_);
 	if (!info->ac)
 	{
 		free(info);
@@ -149,38 +147,37 @@ int	run_command_inpipe(t_btree *ast_node, char *str, t_map **env, t_btree *root_
 	return (e);
 }
 
-int	collapse(t_btree *root, char *str, t_map **env, t_btree *root_)
+int	collapse(t_btree *root, t_map **env, t_btree *root_)
 {
-	int	e;
+	static int	last = T_ROOT;
 
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 	if (root->token == T_ROOT)
-		return (collapse(root->left, str, env, root_));
+	{
+		last = T_ROOT;
+		return (collapse(root->left, env, root_));
+	}
+	else if (root->token == T_COMMAND && last == S_PIPE)
+		return (run_command_inpipe(root, env, root_));
 	else if (root->token == T_COMMAND)
-		return (run_command(root, str, env, root_));
+		return (run_command(root, env, root_));
 	else if (root->token == T_PIPE)
-		return (run_pipe(root, str, env, root_));
+	{
+		last = S_PIPE;
+		return (run_pipe(root, env, root_));
+	}
+	else if (root->token >= T_LEFTRDIR && root->token <= T_RAPPEND && last == S_RDIR)
+	{
+		last = S_RDIR;
+		return (run_redir_inredir(root, env, root_));
+	}
 	else if (root->token >= T_LEFTRDIR && root->token <= T_RAPPEND)
-		return (run_redir(root, str, env, root_));
+	{
+		last = S_RDIR;
+		return (run_redir(root, env, root_));
+	}
 	else
 		return (ft_error("Parsing exception?", "", "", 1));
-	return (e);
-}
-
-int	collapse_inpipe(t_btree *root, char *str, t_map **env, t_btree *root_)
-{
-	int	e;
-
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
-	if (root->token == T_COMMAND)
-		return (run_command_inpipe(root, str, env, root_));
-	else if (root->token == T_PIPE)
-		return (run_pipe(root, str, env, root_));
-	else if (root->token >= T_LEFTRDIR && root->token <= T_RAPPEND)
-		return (run_redir(root, str, env, root_));
-	else
-		return (ft_error("Parsing exception?", "", "", 1));
-	return (e);
+	return (0);
 }

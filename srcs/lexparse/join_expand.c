@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join_expand.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbled <nbled@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:30:23 by nbled             #+#    #+#             */
-/*   Updated: 2023/05/04 16:34:08 by nbled            ###   ########.fr       */
+/*   Updated: 2023/05/06 23:50:56 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void	ft_joindelete(t_list **l_start, t_token expected)
 	ptr = (*l_start)->next;
 	if ((*l_start)->token == expected)
 	{
+		if ((*l_start)->str)
+			free((*l_start)->str);
 		free(*l_start);
 		*l_start = ptr;
 		if (ptr->next)
@@ -31,6 +33,8 @@ void	ft_joindelete(t_list **l_start, t_token expected)
 		if (ptr->token == expected)
 		{
 			tmp->next = ptr->next;
+			if (ptr->str)
+				free(ptr->str);
 			free(ptr);
 			ptr = tmp->next;
 		}
@@ -45,15 +49,20 @@ void	ft_joindelete(t_list **l_start, t_token expected)
 void	ft_joinjoin(t_list *l_start)
 {
 	t_list	*ptr;
+	char	*tmp;
 
 	ptr = l_start->next;
 	while (l_start && l_start->next)
 	{
 		if (ptr->token == T_WORD && l_start->token == T_WORD)
 		{
-			l_start->str = ft_strjoin(l_start->str, ptr->str);
+			tmp = ft_strjoin(l_start->str, ptr->str);
+			free(l_start->str);
+			l_start->str = tmp;
 			l_start->next = ptr->next;
-			ptr = ptr->next;
+			free(ptr->str);
+			free(ptr);
+			ptr = l_start->next;
 		}
 		else if (ptr)
 		{
