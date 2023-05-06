@@ -74,10 +74,10 @@ static int	closewait(int *pipes, int *pid)
 	int	right_status;
 
 	close(pipes[0]);
-	close(pipes[0]);
+	close(pipes[1]);
 	if (waitpid(pid[0], &left_status, 0) == -1)
 		return (1);
-	if (waitpid(pid[0], &right_status, 0) == -1)
+	if (waitpid(pid[1], &right_status, 0) == -1)
 		return (1);
 	if (check_sig(left_status))
 		return (check_sig(left_status));

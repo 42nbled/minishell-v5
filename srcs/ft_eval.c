@@ -6,7 +6,7 @@
 /*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:34:55 by nbled             #+#    #+#             */
-/*   Updated: 2023/05/06 23:32:08 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/07 01:56:46 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ int	ft_eval(char *str, t_map **env)
 	}
 	if (is_something(l_start) == 0)
 	{
+		ft_lstclear(l_start);
 		free(str);
 		return (0);
 	}

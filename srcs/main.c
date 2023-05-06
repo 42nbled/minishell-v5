@@ -6,7 +6,7 @@
 /*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 17:16:29 by nbled             #+#    #+#             */
-/*   Updated: 2023/05/06 23:08:30 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/07 01:26:49 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,11 @@
 
 static int	routine(t_map **env)
 {
-	char	*str;
-	char	*prompt;
+	char			*str;
+	char			*prompt;
+	struct termios	p;
 
+	tcgetattr(STDOUT_FILENO, &p);
 	while (1)
 	{
 		signal(SIGINT, handle_sigint);
@@ -32,6 +34,7 @@ static int	routine(t_map **env)
 		if (*str)
 			add_history(str);
 		last_ret(ft_eval(str, env), 1);
+		tcsetattr(STDIN_FILENO, TCSANOW, &p);
 	}
 	free_map(*env);
 	return (last_ret(0, 0));

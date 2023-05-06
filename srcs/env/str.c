@@ -17,7 +17,10 @@ static char **no_right(t_btree *node)
 	char	**result;
 
 	result = malloc(sizeof(char *) * 2);
-	result[0] = ft_strdup(((t_list*)node->left->data)->str);
+	if (((t_list*)node->left->data)->str)
+		result[0] = ft_strdup(((t_list*)node->left->data)->str);
+	else
+		result[0] = ft_strdup("");
 	result[1] = NULL;
 	return (result);
 }

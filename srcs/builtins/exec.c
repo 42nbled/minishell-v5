@@ -6,7 +6,7 @@
 /*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 23:13:21 by cde-sede          #+#    #+#             */
-/*   Updated: 2023/05/06 23:27:10 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/07 01:34:47 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,11 @@ static int	cmdpath(char **av, t_map **env)
 
 	tmp = ft_strdup(av[0]);
 	path = exportpath(*env);
+	if (!path)
+	{
+		path = malloc(sizeof(char *));
+		path[0] = NULL;
+	}
 	result = NULL;
 	code = ft_find_cmd_path(tmp, path, &result);
 	free(tmp);

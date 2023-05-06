@@ -6,7 +6,7 @@
 /*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 05:20:45 by cde-sede          #+#    #+#             */
-/*   Updated: 2023/04/23 12:16:49 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/07 00:16:42 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ char	**default_environ(void)
 	environ = malloc(sizeof(char *) * 3);
 	if (!environ)
 		return (NULL);
-	environ[0] = ft_strjoin("PWD", cwd);
-	environ[1] = ft_strjoin("SHLVL", "0");
+	environ[0] = ft_strjoin("PWD=", cwd);
+	environ[1] = ft_strjoin("SHLVL=", "0");
 	environ[2] = NULL;
 	free(cwd);
 	return (environ);

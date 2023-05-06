@@ -89,8 +89,6 @@ int	f_export(t_fargs *info)
 	int	join;
 	int	ret;
 
-	for (int j=0; info->av[j]; j++)
-		printf("%d:%s\n", j, info->av[j]);
 	i = 0;
 	join = 0;
 	ret = 0;
