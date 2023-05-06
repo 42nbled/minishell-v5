@@ -113,7 +113,7 @@ static int	herepipe(char *file, t_fargs *info)
 	int	fd;
 	int	rcode;
 
-	fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0666);
+	fd = open(file, O_RDONLY, 0666);
 	if (fd == -1)
 		return (ft_error("open: ", strerror(errno), "", 1));
 	dup2(fd, STDIN_FILENO);
