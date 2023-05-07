@@ -58,7 +58,6 @@ typedef enum e_token
 	T_ERROR,
 	T_OK,
 	S_PIPE,
-	S_RDIR,
 }		t_token;
 
 typedef struct s_list

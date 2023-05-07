@@ -125,7 +125,8 @@ int				run_rrdir_inredir(t_btree *ast_node,
 					t_map **env, t_btree *root_);
 
 // srcs/collapse/redirections.c
-int				run_redir(t_btree *ast_node, t_map **env, t_btree *root_);
+int				run_redir(t_btree *ast_node, t_map **env, t_btree *root_,
+					t_token *last);
 int				run_redir_inredir(t_btree *ast_node,
 					t_map **env, t_btree *root_);
 

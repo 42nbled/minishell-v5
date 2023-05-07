@@ -149,7 +149,7 @@ int	run_command_inpipe(t_btree *ast_node, t_map **env, t_btree *root_)
 
 int	collapse(t_btree *root, t_map **env, t_btree *root_)
 {
-	static int	last = T_ROOT;
+	static t_token	last = T_ROOT;
 
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
@@ -167,15 +167,9 @@ int	collapse(t_btree *root, t_map **env, t_btree *root_)
 		last = S_PIPE;
 		return (run_pipe(root, env, root_));
 	}
-	else if (root->token >= T_LEFTRDIR && root->token <= T_RAPPEND && last == S_RDIR)
-	{
-		last = S_RDIR;
-		return (run_redir_inredir(root, env, root_));
-	}
 	else if (root->token >= T_LEFTRDIR && root->token <= T_RAPPEND)
 	{
-		last = S_RDIR;
-		return (run_redir(root, env, root_));
+		return (run_redir(root, env, root_, &last));
 	}
 	else
 		return (ft_error("Parsing exception?", "", "", 1));

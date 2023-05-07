@@ -31,10 +31,19 @@ static int	closewait(int pid)
 	return (0);
 }
 
-int	run_redir(t_btree *ast_node, t_map **env, t_btree *root_)
+int	run_redir(t_btree *ast_node, t_map **env, t_btree *root_, t_token *last)
 {
-	int	pid;
+	int		pid;
+	t_token	tmp;
 
+	tmp = *last;
+	*last = ast_node->token;
+	if ((ast_node->token == T_LEFTRDIR || ast_node->token == T_LEFTHRDC)
+			&& (tmp == T_LEFTRDIR || tmp == T_LEFTHRDC))
+		return (run_redir_inredir(ast_node, env, root_));
+	if ((ast_node->token == T_RIGHTRDIR || ast_node->token == T_RAPPEND)
+			&& (tmp == T_RIGHTRDIR || tmp == T_RAPPEND))
+		return (run_redir_inredir(ast_node, env, root_));
 	if (ast_node->token == T_LEFTRDIR)
 		pid = run_ldir(ast_node, env, root_);
 	if (ast_node->token == T_RIGHTRDIR)
