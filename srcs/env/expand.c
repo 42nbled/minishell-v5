@@ -25,7 +25,7 @@ int	extract_key(char *str)
 		i++;
 	if (!(str[i] && (ft_isalnum(str[i]) || str[i] == '_')))
 		i--;
-	return (i); //ft_substr(s, start, end - start));
+	return (i);
 }
 
 char	*extract_value(char *s, t_map *env)
@@ -42,13 +42,12 @@ char	*extract_value(char *s, t_map *env)
 		value = ft_itoa(last_ret(0, 0));
 	else
 	{
-		key = ft_substr(s, 1, delim);
+		key = ft_substr(s, 1, delim++);
 		value = ft_strdup(get_env(key, env));
 		free(key);
-		delim++;
 	}
 	if (!value)
-		return (NULL);
+		return (ft_strdup(s + delim));
 	tmp = ft_strjoin(value, s + delim);
 	free(value);
 	return (tmp);
