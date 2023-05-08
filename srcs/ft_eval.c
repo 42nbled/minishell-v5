@@ -6,7 +6,7 @@
 /*   By: nbled <nbled@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:34:55 by nbled             #+#    #+#             */
-/*   Updated: 2023/05/08 08:44:21 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/08 16:32:15 by nbled            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	ft_eval(char *str, t_map **env)
 	if (!l_start)
 	{
 		free(str);
-		return (last_ret(0, 0));
+		return (1);
 	}
 	if (is_something(l_start) == 0)
 	{
@@ -85,7 +85,8 @@ int	ft_eval(char *str, t_map **env)
 		return (0);
 	}
 	l_start = ft_expand(l_start, str, env);
-	l_start = ft_expand_join(&l_start, str);
+	l_start = ft_expand_join(&l_start);
+	print_list(l_start, str);
 	if (!l_start)
 		return (1);
 	root = ft_parse(l_start);
@@ -94,12 +95,14 @@ int	ft_eval(char *str, t_map **env)
 		ft_lstclear(l_start);
 		return (2);
 	}
-	//show_btree(root, 0, str);
+	show_btree(root, 0, str);
 	free(str);
-	if (last_ret(collapse_heredoc(root, env, root), 1))
-		return (btree_clear(root), last_ret(0, 1));
+	collapse_heredoc(root, env, root);
 	//show_btree(root, 0, str);
 	error = collapse(root, env, root);
 	btree_clear(root);
 	return (error);
 }
+
+// ls -la|grep -i "$USER"|wc -l>t2>t3>t4
+// valgrind --suppressions=valignore -s --leak-check=full --show-leak-kinds=all --track-fds=yes ./minishell

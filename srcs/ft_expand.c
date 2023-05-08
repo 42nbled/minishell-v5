@@ -6,7 +6,7 @@
 /*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 23:15:54 by nbled             #+#    #+#             */
-/*   Updated: 2023/05/08 08:44:22 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/06 23:45:34 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,7 @@ t_list	*ft_expand_env(t_list *l_start, char *str, t_map **env)
 	else
 	{
 		ptr = ft_lstnew_expand(tmp[++i], T_WORD);
-		if (tmp[i + 1])
-			ft_lstadd_back(&ptr, ft_lstnew_expand(NULL, T_WHITE));
+		ft_lstadd_back(&ptr, ft_lstnew_expand(NULL, T_WHITE));
 	}
 	while (tmp[++i])
 	{
