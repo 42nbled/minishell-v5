@@ -248,9 +248,9 @@ char			**heredoc_static_delim(char **delim);
 char			**heredoc_static_file(char **file);
 
 // srcs/collapse/heredoc_utils_suite.c
-char	*get_delim(t_btree *node);
-int	collapse_heredoc_recur(t_btree *ast_node, t_map **env, t_btree *root_,
-	int *status);
+char			*get_delim(t_btree *node);
+int				collapse_heredoc_recur(t_btree *ast_node, t_map **env,
+					t_btree *root_, int *status);
 
 // srcs/collapse/rdir.c
 int				run_rdir(t_btree *ast_node, t_map **env, t_btree *root_);
@@ -337,5 +337,6 @@ void			execpipe_coredump(int signal);
 
 int				cmdpath(char **av, t_map **env);
 void			exec_free_environ(char **environ);
+int				rdirpipe_inredir(char *file, int flags, t_fargs *info);
 
 #endif
