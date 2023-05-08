@@ -6,7 +6,7 @@
 /*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 20:00:02 by cde-sede          #+#    #+#             */
-/*   Updated: 2023/05/08 05:08:29 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/08 17:57:46 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,10 @@ int	run_redir(t_btree *ast_node, t_map **env, t_btree *root_, t_token *last)
 	tmp = *last;
 	*last = ast_node->token;
 	if ((ast_node->token == T_LEFTRDIR || ast_node->token == T_LEFTHRDC)
-			&& (tmp == T_LEFTRDIR || tmp == T_LEFTHRDC))
+		&& (tmp == T_LEFTRDIR || tmp == T_LEFTHRDC))
 		return (run_redir_inredir(ast_node, env, root_));
 	if ((ast_node->token == T_RIGHTRDIR || ast_node->token == T_RAPPEND)
-			&& (tmp == T_RIGHTRDIR || tmp == T_RAPPEND))
+		&& (tmp == T_RIGHTRDIR || tmp == T_RAPPEND))
 		return (run_redir_inredir(ast_node, env, root_));
 	if (ast_node->token == T_LEFTRDIR)
 		pid = run_ldir(ast_node, env, root_);

@@ -6,7 +6,7 @@
 /*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 12:35:43 by cde-sede          #+#    #+#             */
-/*   Updated: 2023/05/08 17:11:54 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/08 17:44:07 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static char	*getfilename(t_btree *node)
 {
 	char	*file;
 
-	file = ft_strdup(((t_list*)node->left->data)->str);
+	file = ft_strdup(((t_list *)node->left->data)->str);
 	return (file);
 }
 
@@ -28,7 +28,8 @@ static int	ldirpipe(char *file, t_fargs *info)
 	fd = open(file, O_RDONLY, 0666);
 	free(file);
 	if (fd == -1)
-		return (free_ac(info), free(info), ft_error("open: ", strerror(errno), "", 1));
+		return (free_ac(info), free(info), ft_error("open: ", strerror(errno),
+				"", 1));
 	dup2(fd, STDIN_FILENO);
 	close(fd);
 	rcode = collapse(info->ast_node, info->env, info->root_);
@@ -66,7 +67,8 @@ static int	ldirpipe_inredir(char *file, t_fargs *info)
 
 	fd = open(file, O_RDONLY, 0666);
 	if (fd == -1)
-		return (free_ac(info), free(info), ft_error("open: ", strerror(errno), "", 1));
+		return (free_ac(info), free(info), ft_error("open: ", strerror(errno),
+				"", 1));
 	close(fd);
 	rcode = collapse(info->ast_node, info->env, info->root_);
 	free_ac(info);
@@ -95,4 +97,3 @@ int	run_ldir_inredir(t_btree *ast_node, t_map **env, t_btree *root_)
 	}	
 	return (i);
 }
-

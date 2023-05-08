@@ -6,7 +6,7 @@
 /*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 23:13:21 by cde-sede          #+#    #+#             */
-/*   Updated: 2023/05/08 06:19:45 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/08 18:03:04 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ static void	coredump(int signal)
 	exit(131);
 }
 
-static void	free_environ(char **environ)
+void	exec_free_environ(char **environ)
 {
 	int	i;
 
@@ -123,13 +123,13 @@ int	f_exec(t_fargs *info)
 		if (i)
 		{
 			free_pack(info);
-			free_environ(environ);
+			exec_free_environ(environ);
 			exit(i);
 		}
 		execve(info->av[0], info->av, environ);
 		ft_error("execve: ", strerror(errno), "", 1);
 		free_pack(info);
-		free_environ(environ);
+		exec_free_environ(environ);
 		exit(1);
 	}
 	return (wait_exec(pid));
