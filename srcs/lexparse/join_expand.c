@@ -6,7 +6,7 @@
 /*   By: nbled <nbled@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:30:23 by nbled             #+#    #+#             */
-/*   Updated: 2023/05/08 16:54:51 by nbled            ###   ########.fr       */
+/*   Updated: 2023/05/08 17:12:44 by nbled            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,11 +79,39 @@ void	ft_moveredir(t_list *l_start, char *str)
 	}
 }*/
 
+void	ft_move(t_list **pile_a, t_list **l_start)
+{
+	t_list	*ptr;
+
+	if (!*pile_a)
+		*pile_a = *l_start;
+	else
+		ft_lstadd_back(pile_a, *l_start);
+	ptr = *l_start;
+	if ((*l_start)->token > T_PIPE && ptr)
+	{
+		ptr = ptr->next;
+		*l_start = (*l_start)->next;
+	}
+	*l_start = (*l_start)->next;
+	if (ptr && ptr->next)
+		ptr->next = NULL;
+}
+
+/*
+if (!pile_b)
+					pile_b = l_start;
+				else
+					ft_lstadd_back(&pile_b, l_start);
+				ptr = l_start->next;
+				l_start = l_start->next->next;
+				ptr->next = NULL;
+				*/
+
 t_list	*ft_moveredir(t_list *l_start)
 {
 	t_list	*pile_a;
 	t_list	*pile_b;
-	t_list	*ptr;
 	t_list	*prev;
 
 	prev = NULL;
@@ -94,36 +122,14 @@ t_list	*ft_moveredir(t_list *l_start)
 		while (l_start && l_start->token != T_PIPE)
 		{
 			if (l_start->token < T_PIPE)
-			{
-				if (!pile_a)
-					pile_a = l_start;
-				else
-					ft_lstadd_back(&pile_a, l_start);
-				ptr = l_start;
-				l_start = l_start->next;
-				ptr->next = NULL;
-			}
+				ft_move(&pile_a, &l_start);
 			else if (l_start->token > T_PIPE)
-			{
-				if (!pile_b)
-					pile_b = l_start;
-				else
-					ft_lstadd_back(&pile_b, l_start);
-				ptr = l_start->next;
-				l_start = l_start->next->next;
-				ptr->next = NULL;
-			}
+				ft_move(&pile_b, &l_start);
 		}
 		ft_lstadd_back(&pile_a, pile_b);
 		ft_lstadd_back(&pile_b, l_start);
 		if (l_start && l_start->token == T_PIPE)
-		{
-			ptr = l_start;
-			ft_lstadd_back(&pile_a, l_start);
-			l_start = l_start->next;
-			ptr->next = NULL;
-			prev = pile_a;
-		}
+			ft_move(&pile_a, &l_start);
 		if (prev)
 			ft_lstadd_back(&pile_a, l_start);
 		else
