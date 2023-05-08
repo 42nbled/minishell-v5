@@ -177,7 +177,7 @@ char			**token_getargs(t_list *tokens, char *str, t_map *env);
 int				get_size(char *str, int i);
 
 // srcs/lexparse/join_expand.c
-void			ft_expand_join(t_list **l_start);
+t_list			*ft_expand_join(t_list **l_start);
 
 // srcs/lexparse/lexer.c
 void			get_token(t_list *start, char *str);

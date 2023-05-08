@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_eval.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: nbled <nbled@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:34:55 by nbled             #+#    #+#             */
-/*   Updated: 2023/05/07 01:56:46 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/08 04:01:20 by nbled            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int	ft_eval(char *str, t_map **env)
 		return (0);
 	}
 	l_start = ft_expand(l_start, str, env);
-	ft_expand_join(&l_start);
+	l_start = ft_expand_join(&l_start);
 	if (!l_start)
 		return (1);
 	root = ft_parse(l_start);
@@ -94,9 +94,12 @@ int	ft_eval(char *str, t_map **env)
 		ft_lstclear(l_start);
 		return (2);
 	}
-	show_btree(root, 0, str);
+	//show_btree(root, 0, str);
 	free(str);
 	error = collapse(root, env, root);
 	btree_clear(root);
 	return (error);
 }
+
+// ls -la|grep -i "$USER"|wc -l>t2>t3>t4
+// valgrind --suppressions=valignore -s --leak-check=full --show-leak-kinds=all --track-fds=yes ./minishell
