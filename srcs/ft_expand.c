@@ -3,19 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   ft_expand.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: nbled <nbled@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 23:15:54 by nbled             #+#    #+#             */
-/*   Updated: 2023/05/06 23:45:34 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/08 18:18:58 by nbled            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+t_list	*ft_expand_env_part2(t_list *l_start, char **tmp, t_list *ptr, int i)
+{
+	t_list	*last;
+
+	while (tmp[++i])
+	{
+		ft_lstadd_back(&ptr, ft_lstnew_expand(tmp[i], T_WORD));
+		if (tmp[i + 1])
+			ft_lstadd_back(&ptr, ft_lstnew_expand(NULL, T_WHITE));
+	}
+	if (ft_isspace(l_start->str[ft_strlen(l_start->str) - 1]))
+		ft_lstadd_back(&ptr, ft_lstnew_expand(NULL, T_WHITE));
+	last = ft_lstlast(ptr);
+	ft_lstlast(ptr)->next = l_start->next;
+	l_start->next = ptr;
+	free(tmp);
+	return (last);
+}
+
 t_list	*ft_expand_env(t_list *l_start, char *str, t_map **env)
 {
 	t_list	*ptr;
-	t_list	*last;
 	char	*word;
 	char	**tmp;
 	int		i;
@@ -34,19 +52,7 @@ t_list	*ft_expand_env(t_list *l_start, char *str, t_map **env)
 		ptr = ft_lstnew_expand(tmp[++i], T_WORD);
 		ft_lstadd_back(&ptr, ft_lstnew_expand(NULL, T_WHITE));
 	}
-	while (tmp[++i])
-	{
-		ft_lstadd_back(&ptr, ft_lstnew_expand(tmp[i], T_WORD));
-		if (tmp[i + 1])
-			ft_lstadd_back(&ptr, ft_lstnew_expand(NULL, T_WHITE));
-	}
-	if (ft_isspace(l_start->str[ft_strlen(l_start->str) - 1]))
-		ft_lstadd_back(&ptr, ft_lstnew_expand(NULL, T_WHITE));
-	last = ft_lstlast(ptr);
-	ft_lstlast(ptr)->next = l_start->next;
-	l_start->next = ptr;
-	free(tmp);
-	return (last);
+	return (ft_expand_env_part2(l_start, tmp, ptr, i));
 }
 
 t_list	*ft_expand_env_dquote(t_list *l_start, char *str, t_map **env)
@@ -78,51 +84,59 @@ void	ft_expand_word(t_list *tmp, char *str)
 	tmp->str[i] = '\0';
 }
 
+void	ft_expandifsquotes(t_list **tmp, char *str)
+{
+	t_list	*swapvar;
+
+	if ((*tmp)->next && (*tmp)->token == (*tmp)->next->token)
+	{
+		swapvar = (*tmp)->next;
+		(*tmp)->next = ft_lstnew_expand(NULL, T_WORD);
+		(*tmp)->next->next = swapvar;
+		*tmp = (*tmp)->next;
+	}
+	*tmp = (*tmp)->next;
+	while (*tmp && (*tmp)->token != T_SQUOTE)
+	{
+		if (*tmp && (*tmp)->token == T_WORD)
+			ft_expand_word(*tmp, str);
+		*tmp = (*tmp)->next;
+	}
+}
+
+void	ft_expandifdquotes(t_list **tmp, char *str, t_map **env)
+{
+	t_list	*swapvar;
+
+	if ((*tmp)->next && (*tmp)->token == (*tmp)->next->token)
+	{
+		swapvar = (*tmp)->next;
+		(*tmp)->next = ft_lstnew_expand(NULL, T_WORD);
+		(*tmp)->next->next = swapvar;
+		*tmp = (*tmp)->next;
+	}
+	*tmp = (*tmp)->next;
+	while (*tmp && (*tmp)->token != T_DQUOTE)
+	{
+		if (*tmp && (*tmp)->token == T_WORD)
+			ft_expand_word(*tmp, str);
+		else if (*tmp && (*tmp)->token == T_ENV)
+			*tmp = ft_expand_env_dquote(*tmp, str, env);
+		*tmp = (*tmp)->next;
+	}
+}
+
 t_list	*ft_expand(t_list *l_start, char *str, t_map **env)
 {
 	t_list	*tmp;
-	t_list	*swapvar;
 
 	tmp = l_start;
-	(void)env;
 	while (tmp)
 	{
 		if (tmp->token == T_SQUOTE)
-		{
-			if (tmp->next && tmp->token == tmp->next->token)
-			{
-				swapvar = tmp->next;
-				tmp->next = ft_lstnew_expand(NULL, T_WORD);
-				tmp->next->next = swapvar;
-				tmp = tmp->next;
-			}
-			tmp = tmp->next;
-			while (tmp && tmp->token != T_SQUOTE)
-			{
-				if (tmp && tmp->token == T_WORD)
-					ft_expand_word(tmp, str);
-				tmp = tmp->next;
-			}
-		}
+			ft_expandifsquotes(&tmp, str);
 		else if (tmp->token == T_DQUOTE)
-		{
-			if (tmp->next && tmp->token == tmp->next->token)
-			{
-				swapvar = tmp->next;
-				tmp->next = ft_lstnew_expand(NULL, T_WORD);
-				tmp->next->next = swapvar;
-				tmp = tmp->next;
-			}
-			tmp = tmp->next;
-			while (tmp && tmp->token != T_DQUOTE)
-			{
-				if (tmp && tmp->token == T_WORD)
-					ft_expand_word(tmp, str);
-				else if (tmp && tmp->token == T_ENV)
-					tmp = ft_expand_env_dquote(tmp, str, env);
-				tmp = tmp->next;
-			}
-		}
+			ft_expandifdquotes(&tmp, str, env);
 		else if (tmp && tmp->token == T_WORD)
 			ft_expand_word(tmp, str);
 		else if (tmp && tmp->token == T_ENV)

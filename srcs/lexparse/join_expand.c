@@ -6,7 +6,7 @@
 /*   By: nbled <nbled@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:30:23 by nbled             #+#    #+#             */
-/*   Updated: 2023/05/08 17:23:53 by nbled            ###   ########.fr       */
+/*   Updated: 2023/05/08 18:03:31 by nbled            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ void	ft_joindelete(t_list **l_start, t_token expected)
 	}
 	ft_joindeletesuite(l_start, expected, ptr);
 }
-
 
 void	insert_stack(t_list **pile_a, t_list **l_start)
 {
@@ -100,12 +99,10 @@ t_list	*ft_moveredir(t_list *l_start)
 	return (prev);
 }
 
-void	ft_joinjoin(t_list *l_start)
+void	ft_joinjoin(t_list *l_start, t_list *ptr)
 {
-	t_list	*ptr;
 	char	*tmp;
 
-	ptr = l_start->next;
 	while (l_start && l_start->next)
 	{
 		if (ptr->token == T_WORD && l_start->token == T_WORD)
@@ -132,29 +129,10 @@ void	ft_joinjoin(t_list *l_start)
 
 t_list	*ft_expand_join(t_list **l_start)
 {
-//	printf("\n----------base\n");
-//	print_list(*l_start, str);
-//	ft_joindelete(l_start, T_SQUOTE);
-//	printf("\n----------squote\n");
-//	print_list(*l_start, str);
-//	ft_joindelete(l_start, T_DQUOTE);
-//	printf("\n----------dquote\n");
-//	print_list(*l_start, str);
-//	ft_joindelete(l_start, T_ENV);
-//	printf("\n----------env\n");
-//	print_list(*l_start, str);
-//	ft_joinjoin(*l_start);
-//	printf("\n----------join\n");
-//	print_list(*l_start, str);
-//	ft_joindelete(l_start, T_WHITE);
-//	printf("\n----------white\n");
-//	print_list(*l_start, str);
-
 	ft_joindelete(l_start, T_SQUOTE);
 	ft_joindelete(l_start, T_DQUOTE);
 	ft_joindelete(l_start, T_ENV);
-	ft_joinjoin(*l_start);
+	ft_joinjoin(*l_start, (*l_start)->next);
 	ft_joindelete(l_start, T_WHITE);
-
 	return (ft_moveredir(*l_start));
 }
