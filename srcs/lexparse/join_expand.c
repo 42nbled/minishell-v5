@@ -6,7 +6,7 @@
 /*   By: nbled <nbled@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:30:23 by nbled             #+#    #+#             */
-/*   Updated: 2023/05/08 05:15:16 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/08 08:13:13 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ t_list	*ft_moveredir(t_list *l_start)
 		if (l_start && l_start->token == T_PIPE)
 		{
 			ptr = l_start;
+			ft_lstadd_back(&pile_a, l_start);
 			l_start = l_start->next;
 			ptr->next = NULL;
 			prev = pile_a;
@@ -151,11 +152,15 @@ void	ft_joinjoin(t_list *l_start)
 	{
 		if (ptr->token == T_WORD && l_start->token == T_WORD)
 		{
-			tmp = ft_strjoin(l_start->str, ptr->str);
+			if (ptr->str)
+				tmp = ft_strjoin(l_start->str, ptr->str);
+			else
+				tmp = ft_strdup(l_start->str);
 			free(l_start->str);
 			l_start->str = tmp;
 			l_start->next = ptr->next;
-			free(ptr->str);
+			if (ptr->str)
+				free(ptr->str);
 			free(ptr);
 			ptr = l_start->next;
 		}
@@ -167,8 +172,9 @@ void	ft_joinjoin(t_list *l_start)
 	}
 }
 
-t_list	*ft_expand_join(t_list **l_start)
+t_list	*ft_expand_join(t_list **l_start, char *str)
 {
+	(void)str;
 	ft_joindelete(l_start, T_SQUOTE);
 	ft_joindelete(l_start, T_DQUOTE);
 	ft_joindelete(l_start, T_ENV);

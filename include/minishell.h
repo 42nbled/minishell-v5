@@ -6,7 +6,7 @@
 /*   By: cde-sede <marvin@42.fr>					+#+  +:+	   +#+		*/
 /*												+#+#+#+#+#+   +#+		   */
 /*   Created: 2023/03/06 17:16:38 by nbled			 #+#	#+#			 */
-/*   Updated: 2023/05/08 04:02:20 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/08 08:04:22 by cde-sede         ###   ########.fr       */
 /*																			*/
 /* ************************************************************************** */
 
@@ -179,7 +179,7 @@ char			**token_getargs(t_list *tokens, char *str, t_map *env);
 int				get_size(char *str, int i);
 
 // srcs/lexparse/join_expand.c
-t_list			*ft_expand_join(t_list **l_start);
+t_list			*ft_expand_join(t_list **l_start, char *str);
 
 // srcs/lexparse/lexer.c
 void			get_token(t_list *start, char *str);

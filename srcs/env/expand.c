@@ -6,7 +6,7 @@
 /*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 16:48:01 by cde-sede          #+#    #+#             */
-/*   Updated: 2023/04/26 19:26:10 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/08 07:59:17 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	extract_key(char *str)
 
 	i = 1;
 	if (str[0] == '$' && str[1] == '?')
-		return (2);
+		return (-2);
 	if (str[i] != '_' && !ft_isalpha(str[i]))
 		return (-1);
 	while (str[i] && (ft_isalnum(str[i]) || str[i] == '_'))
@@ -38,7 +38,7 @@ char	*extract_value(char *s, t_map *env)
 	delim = extract_key(s);
 	if (delim <= 0)
 		return (ft_strdup("$"));
-	if (delim == 2)
+	if (delim == -2)
 		value = ft_itoa(last_ret(0, 0));
 	else
 	{

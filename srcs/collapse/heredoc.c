@@ -6,7 +6,7 @@
 /*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 18:47:11 by cde-sede          #+#    #+#             */
-/*   Updated: 2023/05/08 07:21:32 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/08 07:57:24 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,6 +191,7 @@ int	get_one_heredoc(char *file, char *delim, t_fargs *info)
 	pid = fork();
 	if (pid == 0)
 	{
+		printf("open heredoc %s\n", file);
 		if (!open_heredoc(file, delim))
 			status = 0;
 		else
@@ -212,6 +213,7 @@ int	get_one_heredoc(char *file, char *delim, t_fargs *info)
 int	collapse_heredoc(t_btree *ast_node, t_map **env, t_btree *root_)
 {
 	static t_token	last = T_ROOT;
+	t_token			temp;
 	char			*file;
 	char			*delim;
 	int				status;
@@ -220,19 +222,24 @@ int	collapse_heredoc(t_btree *ast_node, t_map **env, t_btree *root_)
 	signal(SIGQUIT, SIG_IGN);
 	if (!ast_node || ast_node->token == T_COMMAND)
 		return (0);
+	temp = last;
+	last = ast_node->token;
 	if (ast_node->token == T_ROOT)
-	{
-		last = T_ROOT;
 		return (collapse_heredoc(ast_node->left, env, root_));
-	}
-	if (ast_node->token == T_LEFTHRDC && last != T_LEFTHRDC)
+	if (ast_node->left)
 	{
-		printf("heredoc recursive\n");
-		last = T_LEFTHRDC;
 		status = collapse_heredoc(ast_node->left, env, root_);
-		printf("heredoc done status=%d\n", status);
 		if (status)
 			return (status);
+	}
+	if (ast_node->right)
+	{
+		status = collapse_heredoc(ast_node->right, env, root_);
+		if (status)
+			return (status);
+	}
+	if (ast_node->token == T_LEFTHRDC && temp != T_LEFTHRDC)
+	{
 		file = heredoc_path();
 		delim = get_delim(ast_node->right);
 		ast_node->data = ft_lstnew_expand(file, T_ARGS);
@@ -240,22 +247,13 @@ int	collapse_heredoc(t_btree *ast_node, t_map **env, t_btree *root_)
 			return (1);
 		return (0);
 	}
-	if (ast_node->token == T_LEFTHRDC)
+	else if (ast_node->token == T_LEFTHRDC)
 	{
-		printf("heredoc inheredoc computed\n");
-		last = T_LEFTHRDC;
 		file = heredoc_path();
+		printf("heredoc inheredoc %s\n", file);
 		delim = get_delim(ast_node->right);
 		ast_node->data = ft_lstnew_expand(file, T_ARGS);
-		return (collapse_heredoc(ast_node->left, env, root_));
-	}
-	else
-	{
-		last = ast_node->token;
-		if (collapse_heredoc(ast_node->left, env, root_))
-			return (1);
-		if (collapse_heredoc(ast_node->right, env, root_))
-			return (1);
+		return (0);
 	}
 	return (0);
 }
