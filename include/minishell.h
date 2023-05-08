@@ -66,7 +66,8 @@ t_list			*ft_moveredir(t_list *l_start);
 void			ft_joinjoin(t_list *l_start, t_list *ptr);
 t_list			*ft_expand_join(t_list **l_start);
 
-// srcs/lexparse/join_expand.c
+// srcs/lexparse/move_redir.c
+t_list			*ft_moveredir(t_list *l_start);
 
 // srcs/print.c
 void			print_list(t_list *tmp, char *str);
@@ -204,6 +205,9 @@ t_list			*ft_lstnew_expand(char *str, t_token t);
 // srcs/list/ft_lstlast.c
 t_list			*ft_lstlast(t_list *lst);
 
+// srcs/ft_ft_expand_env.c
+t_list			*ft_expand_env(t_list *l_start, char *str, t_map **env);
+
 // srcs/ft_expand.c
 t_list			*ft_expand_env(t_list *l_start, char *str, t_map **env);
 t_list			*ft_expand_env_dquote(t_list *l_start, char *str, t_map **env);
@@ -242,6 +246,11 @@ char			*heredoc_path(void);
 t_fargs			**heredoc_static_pack(t_fargs **pack);
 char			**heredoc_static_delim(char **delim);
 char			**heredoc_static_file(char **file);
+
+// srcs/collapse/heredoc_utils_suite.c
+char	*get_delim(t_btree *node);
+int	collapse_heredoc_recur(t_btree *ast_node, t_map **env, t_btree *root_,
+	int *status);
 
 // srcs/collapse/rdir.c
 int				run_rdir(t_btree *ast_node, t_map **env, t_btree *root_);

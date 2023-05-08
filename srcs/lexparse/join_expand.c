@@ -6,7 +6,7 @@
 /*   By: nbled <nbled@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:30:23 by nbled             #+#    #+#             */
-/*   Updated: 2023/05/08 18:46:16 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/08 19:09:45 by nbled            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,53 +50,6 @@ void	ft_joindelete(t_list **l_start, t_token expected)
 			ptr = ptr->next;
 	}
 	ft_joindeletesuite(l_start, expected, ptr);
-}
-
-void	insert_stack(t_list **pile_a, t_list **l_start)
-{
-	t_list	*ptr;
-
-	if (!*pile_a)
-		*pile_a = *l_start;
-	else
-		ft_lstadd_back(pile_a, *l_start);
-	ptr = *l_start;
-	if ((*l_start)->token > T_PIPE)
-	{
-		ptr = ptr->next;
-		*l_start = (*l_start)->next;
-	}
-	*l_start = (*l_start)->next;
-	ptr->next = NULL;
-}
-
-t_list	*ft_moveredir(t_list *l_start)
-{
-	t_list	*pile_a;
-	t_list	*pile_b;
-	t_list	*prev;
-
-	prev = NULL;
-	while (l_start)
-	{
-		pile_a = NULL;
-		pile_b = NULL;
-		while (l_start && l_start->token != T_PIPE)
-		{
-			if (l_start->token < T_PIPE)
-				insert_stack(&pile_a, &l_start);
-			else if (l_start->token > T_PIPE)
-				insert_stack(&pile_b, &l_start);
-		}
-		ft_lstadd_back(&pile_a, pile_b);
-		while (l_start && l_start->token == T_PIPE)
-			insert_stack(&pile_a, &l_start);
-		if (!prev)
-			prev = pile_a;
-		else
-			ft_lstadd_back(&prev, pile_a);
-	}
-	return (prev);
 }
 
 void	ft_joinjoin(t_list *l_start, t_list *ptr)

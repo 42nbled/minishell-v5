@@ -7,14 +7,14 @@ CFLAGS = -Wall -Werror -Wextra -I./include -g #-fsanitize=address -fsanitize=und
 RM = rm -f
 
 SRC_MAIN = main
-SRC_LEXPARSE = lexer join_expand check quote_check get_size state
-SRC_COLLAPSE = collapse redirections pipe rdir ldir path heredoc pipe_exec heredoc_collapse heredoc_input heredoc_utils pipe_exec_utils pack run_command
+SRC_LEXPARSE = lexer join_expand check quote_check get_size state moveredir
+SRC_COLLAPSE = collapse redirections pipe rdir ldir path heredoc pipe_exec heredoc_collapse heredoc_input heredoc_utils heredoc_utils_suite pipe_exec_utils pack run_command
 SRC_ENV = creation defaults env str functions shlvl expand
 SRC_BUILTINS = exec echo cd pwd env exit unset export
 SRC_UTILS = get_next_line ft_swapstr ft_atoi ft_strcmp ft_strncmp ft_itoa ft_isdigit ft_isalpha ft_isalnum ft_errors ft_putstr_fd ft_realloc ft_split ft_splitexpand ft_strcat ft_strdup ft_strndup ft_findi ft_strchr ft_strrchr ft_strcpy ft_strjoin ft_strlcpy ft_strlen ft_strnstr ft_strstr ft_substr issomething signal_handler
 SRC_LIST = ft_lstadd_back ft_lstclear ft_lstnew ft_lstlast
 SRC_BTREE = btree_join btree_delete btree_new
-SRC_PRINT = print prompt ft_expand ft_eval
+SRC_PRINT = print prompt ft_expand ft_eval ft_expand_env
 
 SRC_FILES += $(SRC_MAIN)
 SRC_FILES += $(addprefix lexparse/, $(SRC_LEXPARSE))
