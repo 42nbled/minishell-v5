@@ -6,7 +6,7 @@
 /*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 22:06:31 by cde-sede          #+#    #+#             */
-/*   Updated: 2023/05/08 18:50:43 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/08 19:21:33 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,6 @@ int	cmdpath(char **av, t_map **env)
 		return (code);
 	if (code)
 		return (free(result), code);
-	free(av[0]);
-	av[0] = result;
 	return (free(av[0]), av[0] = result, 0);
 }
 
