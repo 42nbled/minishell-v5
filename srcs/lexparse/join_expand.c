@@ -6,27 +6,16 @@
 /*   By: nbled <nbled@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:30:23 by nbled             #+#    #+#             */
-/*   Updated: 2023/05/08 17:12:44 by nbled            ###   ########.fr       */
+/*   Updated: 2023/05/08 17:23:53 by nbled            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_joindelete(t_list **l_start, t_token expected)
+void	ft_joindeletesuite(t_list **l_start, t_token expected, t_list *ptr)
 {
-	t_list	*ptr;
 	t_list	*tmp;
 
-	ptr = (*l_start)->next;
-	if ((*l_start)->token == expected)
-	{
-		if ((*l_start)->str)
-			free((*l_start)->str);
-		free(*l_start);
-		*l_start = ptr;
-		if (ptr->next)
-			ptr = ptr->next;
-	}
 	tmp = *l_start;
 	while (ptr)
 	{
@@ -46,40 +35,25 @@ void	ft_joindelete(t_list **l_start, t_token expected)
 	}
 }
 
-/*
-void	ft_moveredir(t_list *l_start, char *str)
+void	ft_joindelete(t_list **l_start, t_token expected)
 {
 	t_list	*ptr;
-	t_list	*end;
-	t_list	*tmp;
 
-	(void)str;
-	ptr = l_start->next;
-	while (ptr)
+	ptr = (*l_start)->next;
+	if ((*l_start)->token == expected)
 	{
-		if (ptr->token >= T_LEFTRDIR)
-		{
-			end = ptr->next->next;
-			while (end && end->token >= T_LEFTRDIR)
-				end = end->next->next;
-			if (!end || end == NULL)
-				return ;
-			l_start->next = end;
-			tmp = ptr;
-			while (tmp && tmp->next != end)
-				tmp = tmp->next;
-			tmp->next = end->next;
-			end->next = ptr;
-			//return;
-		}
-		l_start = ptr;
-		ptr = ptr->next;
-		//print_list(l_start, str);
-		//printf("\n");
+		if ((*l_start)->str)
+			free((*l_start)->str);
+		free(*l_start);
+		*l_start = ptr;
+		if (ptr->next)
+			ptr = ptr->next;
 	}
-}*/
+	ft_joindeletesuite(l_start, expected, ptr);
+}
 
-void	ft_move(t_list **pile_a, t_list **l_start)
+
+void	insert_stack(t_list **pile_a, t_list **l_start)
 {
 	t_list	*ptr;
 
@@ -88,25 +62,14 @@ void	ft_move(t_list **pile_a, t_list **l_start)
 	else
 		ft_lstadd_back(pile_a, *l_start);
 	ptr = *l_start;
-	if ((*l_start)->token > T_PIPE && ptr)
+	if ((*l_start)->token > T_PIPE)
 	{
 		ptr = ptr->next;
 		*l_start = (*l_start)->next;
 	}
 	*l_start = (*l_start)->next;
-	if (ptr && ptr->next)
-		ptr->next = NULL;
+	ptr->next = NULL;
 }
-
-/*
-if (!pile_b)
-					pile_b = l_start;
-				else
-					ft_lstadd_back(&pile_b, l_start);
-				ptr = l_start->next;
-				l_start = l_start->next->next;
-				ptr->next = NULL;
-				*/
 
 t_list	*ft_moveredir(t_list *l_start)
 {
@@ -122,31 +85,20 @@ t_list	*ft_moveredir(t_list *l_start)
 		while (l_start && l_start->token != T_PIPE)
 		{
 			if (l_start->token < T_PIPE)
-				ft_move(&pile_a, &l_start);
+				insert_stack(&pile_a, &l_start);
 			else if (l_start->token > T_PIPE)
-				ft_move(&pile_b, &l_start);
+				insert_stack(&pile_b, &l_start);
 		}
 		ft_lstadd_back(&pile_a, pile_b);
-		ft_lstadd_back(&pile_b, l_start);
-		if (l_start && l_start->token == T_PIPE)
-			ft_move(&pile_a, &l_start);
-		if (prev)
-			ft_lstadd_back(&pile_a, l_start);
-		else
+		while (l_start && l_start->token == T_PIPE)
+			insert_stack(&pile_a, &l_start);
+		if (!prev)
 			prev = pile_a;
+		else
+			ft_lstadd_back(&prev, pile_a);
 	}
 	return (prev);
 }
-
-/*
-			  a
-	l_start = > c b
-	pile_a  = a
-	pile_b  =
-	ptr     = a
-
-	a > c b
-*/
 
 void	ft_joinjoin(t_list *l_start)
 {
