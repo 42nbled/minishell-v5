@@ -6,7 +6,7 @@
 /*   By: nbled <nbled@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 23:59:29 by nbled             #+#    #+#             */
-/*   Updated: 2023/05/04 16:16:42 by nbled            ###   ########.fr       */
+/*   Updated: 2023/05/08 20:34:51 by nbled            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,6 @@ void	get_token(t_list *start, char *str)
 		start->token = T_DQUOTE;
 	else if (str[i] == '|')
 		start->token = T_PIPE;
-	else if (str[i] == '(')
-		start->token = T_LPAREN;
-	else if (str[i] == ')')
-		start->token = T_RPAREN;
 	else if (str[i] == '<' || str[i] == '>')
 		chevron_check(start, str);
 }

@@ -6,7 +6,7 @@
 /*   By: nbled <nbled@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:34:55 by nbled             #+#    #+#             */
-/*   Updated: 2023/05/08 20:14:30 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/08 20:39:56 by nbled            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ static t_list	*ft_lex(char *str)
 		i = size;
 	}
 	return (lex_check(start));
+	print_list(start, str);
 }
 
 int	is_something(t_list	*l_start)
