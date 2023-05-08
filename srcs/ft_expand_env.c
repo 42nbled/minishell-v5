@@ -6,7 +6,7 @@
 /*   By: nbled <nbled@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 19:13:28 by nbled             #+#    #+#             */
-/*   Updated: 2023/05/08 19:13:55 by nbled            ###   ########.fr       */
+/*   Updated: 2023/05/08 20:13:05 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ t_list	*ft_expand_env(t_list *l_start, char *str, t_map **env)
 	else
 	{
 		ptr = ft_lstnew_expand(tmp[++i], T_WORD);
-		ft_lstadd_back(&ptr, ft_lstnew_expand(NULL, T_WHITE));
+		if (tmp[i + 1])
+			ft_lstadd_back(&ptr, ft_lstnew_expand(NULL, T_WHITE));
 	}
 	return (ft_expand_env_part2(l_start, tmp, ptr, i));
 }

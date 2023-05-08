@@ -6,7 +6,7 @@
 /*   By: nbled <nbled@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 17:25:51 by cde-sede          #+#    #+#             */
-/*   Updated: 2023/05/08 19:22:31 by nbled            ###   ########.fr       */
+/*   Updated: 2023/05/08 19:59:54 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ int	precheckfile(t_btree *ast_node, t_map **env, t_btree *root_)
 	file = get_delim(ast_node->right);
 	fd = open(file, O_RDONLY, 0666);
 	free(file);
+	printf("precheck\n");
 	if (fd == -1)
 		return (ft_error("open: ", strerror(errno), "", 1));
 	close(fd);
@@ -88,10 +89,10 @@ int	collapse_heredoc(t_btree *ast_node, t_map **env, t_btree *root_)
 		return (0);
 	temp = last;
 	last = ast_node->token;
-	if (collapse_heredoc_recur(ast_node, env, root_, &status) && status)
-		return (status);
 	if (ast_node->token == T_ROOT)
 		return (collapse_heredoc(ast_node->left, env, root_));
+	else if (collapse_heredoc_recur(ast_node, env, root_, &status) && status)
+		return (status);
 	if (ast_node->token == T_LEFTHRDC && temp != T_LEFTHRDC)
 		return (collapse_heredoc_heredoc(ast_node, env, root_));
 	else if (ast_node->token == T_LEFTHRDC)
