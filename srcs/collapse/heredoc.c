@@ -22,7 +22,9 @@ void	heredoc_sigint(int sig)
 	pack = heredoc_static_pack(NULL);
 	file = heredoc_static_file(NULL);
 	delim = heredoc_static_delim(NULL);
+	free(*delim);
 	free_pack(*pack);
+	free(*pack);
 	*pack = NULL;
 	*file = NULL;
 	*delim = NULL;
@@ -90,9 +92,8 @@ int	get_one_heredoc(char *file, char *delim, t_fargs *info)
 	pid = fork();
 	if (pid == 0)
 	{
-		printf("open heredoc %s\n", file);
 		status = 1;
-		if (!open_heredoc(file, delim))
+		if (open_heredoc(file, delim) == 0)
 			status = 0;
 		free(delim);
 		free_pack(info);
@@ -101,7 +102,7 @@ int	get_one_heredoc(char *file, char *delim, t_fargs *info)
 	}
 	free(info);
 	free(delim);
-	if (waitpid(pid, &status, 0))
+	if (!waitpid(pid, &status, 0))
 		return (1);
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));

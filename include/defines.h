@@ -28,14 +28,6 @@
 # define HERE_DOC_WARNING "warning: here-document at line "
 # define HERE_DOC_EOF " delimited by end-of-file (wanted `"
 
-// See https://www.in-ulm.de/~mascheck/various/argmax/
-# ifndef _ARG_MAX
-#  define _ARG_MAX 2097152
-# endif
-# ifndef _ARG_MAX_STRLEN
-#  define _ARG_MAX_STRLEN 131072
-# endif
-
 typedef enum e_token
 {
 	T_WORD,
