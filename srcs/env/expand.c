@@ -6,7 +6,7 @@
 /*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 16:48:01 by cde-sede          #+#    #+#             */
-/*   Updated: 2023/05/08 08:27:22 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/08 08:48:59 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,13 @@ char	*extract_value(char *s, t_map *env)
 	char	*tmp;
 
 	delim = extract_key(s);
-	if (delim <= 0)
+	if (delim == -1)
 		return (ft_strdup("$"));
 	if (delim == -2)
+	{
 		value = ft_itoa(last_ret(0, 0));
+		delim = 2;
+	}
 	else
 	{
 		key = ft_substr(s, 1, delim++);
