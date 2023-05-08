@@ -6,7 +6,7 @@
 /*   By: nbled <nbled@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 19:33:22 by nbled             #+#    #+#             */
-/*   Updated: 2023/05/08 22:44:44 by nbled            ###   ########.fr       */
+/*   Updated: 2023/05/08 23:35:27 by nbled            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ t_list	*state_command_right(t_list *l_start, t_btree *ast_node
 		return (ast_node->right->right = btree_new(NULL, T_ARGS), tmp);
 	return (ptr);
 }
-// 2l
 
 t_list	*state_command(t_list *l_start, t_btree *ast_node
 	, t_list *tmp, t_list *ptr)

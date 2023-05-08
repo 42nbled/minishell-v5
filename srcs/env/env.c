@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: nbled <nbled@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 02:31:42 by cde-sede          #+#    #+#             */
-/*   Updated: 2023/05/08 01:28:02 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/08 23:37:42 by nbled            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,6 @@ void	free_map(t_map	*e)
 		envfreeone(e);
 	}
 }
-
-// static void	free_environ(char **e)
-// {
-// 	int		i;
-// 
-// 	i = -1;
-// 	while (e[++i])
-// 		free(e[i]);
-// 	free(e);
-// }
 
 char	**export(t_map *e)
 {
