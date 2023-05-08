@@ -6,7 +6,7 @@
 /*   By: cde-sede <marvin@42.fr>					+#+  +:+	   +#+		*/
 /*												+#+#+#+#+#+   +#+		   */
 /*   Created: 2023/03/06 17:16:38 by nbled			 #+#	#+#			 */
-/*   Updated: 2023/05/08 20:14:26 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/08 23:29:36 by cde-sede         ###   ########.fr       */
 /*																			*/
 /* ************************************************************************** */
 
@@ -236,7 +236,7 @@ int				ft_eval(char *str, t_map **env);
 int				run_heredoc_inredir(t_btree *ast_node, t_map **env,
 					t_btree *root_);
 int				collapse_heredoc(t_btree *ast_node, t_map **env,
-					t_btree *root_);
+					t_btree *root_, t_token last);
 
 // srcs/collapse/heredoc_input.c
 int				getwrite(int fd, char *delim);

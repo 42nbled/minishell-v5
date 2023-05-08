@@ -6,7 +6,7 @@
 /*   By: nbled <nbled@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:34:55 by nbled             #+#    #+#             */
-/*   Updated: 2023/05/08 22:42:09 by nbled            ###   ########.fr       */
+/*   Updated: 2023/05/08 23:29:49 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int	ft_eval(char *str, t_map **env)
 	root = ft_parse(l_start);
 	if (!root)
 		return (ft_lstclear(l_start), 2);
-	if (!collapse_heredoc(root, env, root))
+	if (!collapse_heredoc(root, env, root, T_ROOT))
 		error = collapse(root, env, root);
 	else
 		error = 1;
@@ -93,36 +93,3 @@ int	ft_eval(char *str, t_map **env)
 	btree_clear(root);
 	return (error);
 }
-
-/*
-echo123 | cat < test
-
-
-Root value = ROOT
-    Left value = LEFTRDIR
-        Left value = PIPE
-            Left value = COMMAND
-                Left value = FUNCTION [echo]
-                Right value = ARGS    [123]
-            Right value = COMMAND
-                Left value = FUNCTION [cat]
-                Right value = ARGS    
-        Right value = COMMAND
-            Left value = FUNCTION [test]
-
-
-Root value = ROOT
-    Left value = PIPE
-        Left value = COMMAND
-            Left value = FUNCTION [echo]
-            Right value = ARGS    [123]
-		Right value = LEFTRDIR
-			Left value = COMMAND
-    	        Left value = FUNCTION [cat]
-        	    Right value = ARGS    
-        	Right value = COMMAND
-        	    Left value = FUNCTION [test]
-
-
-
-*/

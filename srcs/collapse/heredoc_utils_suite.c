@@ -6,7 +6,7 @@
 /*   By: nbled <nbled@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 19:21:50 by nbled             #+#    #+#             */
-/*   Updated: 2023/05/08 19:59:56 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/08 23:31:15 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,14 @@ int	collapse_heredoc_recur(t_btree *ast_node, t_map **env, t_btree *root_,
 	*status = 0;
 	if (ast_node->left)
 	{
-		*status = collapse_heredoc(ast_node->left, env, root_);
+		*status = collapse_heredoc(ast_node->left, env, root_, ast_node->token);
 		if (*status)
 			return (*status);
 	}
 	if (ast_node->right)
 	{
-		*status = collapse_heredoc(ast_node->right, env, root_);
+		*status = collapse_heredoc(ast_node->right, env, root_,
+				ast_node->token);
 		if (*status)
 			return (*status);
 	}

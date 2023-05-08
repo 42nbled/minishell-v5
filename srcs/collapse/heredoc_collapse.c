@@ -6,7 +6,7 @@
 /*   By: nbled <nbled@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 17:25:51 by cde-sede          #+#    #+#             */
-/*   Updated: 2023/05/08 22:49:22 by nbled            ###   ########.fr       */
+/*   Updated: 2023/05/08 23:31:00 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,9 @@ int	precheckfile(t_btree *ast_node, t_map **env, t_btree *root_)
 	return (0);
 }
 
-int	collapse_heredoc(t_btree *ast_node, t_map **env, t_btree *root_)
+int	collapse_heredoc(t_btree *ast_node, t_map **env, t_btree *root_,
+	t_token last)
 {
-	static t_token	last = T_ROOT;
 	t_token			temp;
 	int				status;
 
@@ -89,7 +89,7 @@ int	collapse_heredoc(t_btree *ast_node, t_map **env, t_btree *root_)
 	temp = last;
 	last = ast_node->token;
 	if (ast_node->token == T_ROOT)
-		return (collapse_heredoc(ast_node->left, env, root_));
+		return (collapse_heredoc(ast_node->left, env, root_, T_ROOT));
 	else if (collapse_heredoc_recur(ast_node, env, root_, &status) && status)
 		return (status);
 	if (ast_node->token == T_LEFTHRDC && temp != T_LEFTHRDC)
