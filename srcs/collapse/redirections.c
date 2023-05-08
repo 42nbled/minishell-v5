@@ -6,7 +6,7 @@
 /*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 20:00:02 by cde-sede          #+#    #+#             */
-/*   Updated: 2023/05/08 01:45:29 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/08 05:08:29 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,3 @@ int	run_redir_inredir(t_btree *ast_node, t_map **env, t_btree *root_)
 		pid = run_heredoc_inredir(ast_node, env, root_);
 	return (closewait(pid));
 }
-

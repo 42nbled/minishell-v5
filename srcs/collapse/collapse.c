@@ -6,7 +6,7 @@
 /*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 18:18:22 by cde-sede          #+#    #+#             */
-/*   Updated: 2023/05/08 04:32:59 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/08 05:08:12 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,11 +161,13 @@ int	run_command_inpipe(t_btree *ast_node, t_map **env, t_btree *root_)
 int	collapse(t_btree *root, t_map **env, t_btree *root_)
 {
 	static t_token	last = T_ROOT;
+	static int		depth = 0;
 
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
+	depth++;
 	if (!root)
 		return (0);
+	if (depth >= 16)
+		return (ft_error("depth limit exceeded", "", "", 255));
 	if (root->token == T_ROOT)
 	{
 		last = T_ROOT;

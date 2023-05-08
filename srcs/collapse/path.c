@@ -6,7 +6,7 @@
 /*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 21:12:00 by cde-sede          #+#    #+#             */
-/*   Updated: 2023/05/08 01:48:15 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/08 05:50:33 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,11 @@ static int	ft_try_path(char *cmd, char **path, char **result)
 
 static int	ft_check_absolute_relative_path(char *cmd)
 {
+	int	status;
+
+	status = 0;
+	if (access(cmd, F_OK))
+		return (ft_error(cmd, ": command not found", "", 127));
 	if (!access(cmd, F_OK | X_OK))
 		return (0);
 	ft_error(cmd, ": ", strerror(errno), 1);

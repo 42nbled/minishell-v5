@@ -6,7 +6,7 @@
 /*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 22:06:31 by cde-sede          #+#    #+#             */
-/*   Updated: 2023/05/08 01:23:24 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/08 05:50:32 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,11 @@ static int	cmdpath(char **av, t_map **env)
 
 	tmp = ft_strdup(av[0]);
 	path = exportpath(*env);
+	if (!path)
+	{
+		path = malloc(sizeof(char *));
+		path[0] = NULL;
+	}
 	result = NULL;
 	code = ft_find_cmd_path(tmp, path, &result);
 	free(tmp);
@@ -30,7 +35,7 @@ static int	cmdpath(char **av, t_map **env)
 		free(path[i]);
 	free(path);
 	if (!result)
-		return (1);
+		return (code);
 	if (code)
 	{
 		free(result);
@@ -71,6 +76,18 @@ static void	free_environ(char **environ)
 	free(environ);
 }
 
+static void	coredump(int signal)
+{
+	t_fargs	**pack;
+
+	(void)signal;
+	pack = pack__(NULL);
+	free_pack(*pack);
+	*pack = NULL;
+	exit(131);
+}
+
+
 int	f_exec_inpipe(t_fargs *info)
 {
 	char	**environ;
@@ -78,7 +95,7 @@ int	f_exec_inpipe(t_fargs *info)
 
 	pack__(&info);
 	signal(SIGINT, exitfree);
-	signal(SIGQUIT, SIG_IGN);
+	signal(SIGQUIT, coredump);
 	environ = export(*(info->env));
 	i = cmdpath(info->av, info->env);
 	if (i)

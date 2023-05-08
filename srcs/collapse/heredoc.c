@@ -6,7 +6,7 @@
 /*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 18:47:11 by cde-sede          #+#    #+#             */
-/*   Updated: 2023/05/08 04:37:21 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/08 05:50:32 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ int	open_heredoc(char *path, char *delim)
 	return (0);
 }
 
-static int	herepipe(char *file, t_fargs *info)
+static int	herepipe(char *file, t_btree *ast_node, t_map **env, t_btree *root_)
 {
 	int	fd;
 	int	rcode;
@@ -143,9 +143,7 @@ static int	herepipe(char *file, t_fargs *info)
 		return (ft_error("open: ", strerror(errno), "", 1));
 	dup2(fd, STDIN_FILENO);
 	close(fd);
-	rcode = collapse(info->ast_node, info->env, info->root_);
-	free_ac(info);
-	free(info);
+	rcode = collapse(ast_node, env, root_);
 	return (rcode);
 }
 
@@ -159,7 +157,7 @@ int	run_heredoc(t_btree *ast_node, t_map **env, t_btree *root_)
 	if (i == 0)
 	{
 		file = ((t_list*)ast_node->data)->str;
-		rcode = herepipe(file, pack(ast_node->left, env, root_));
+		rcode = herepipe(file, ast_node->left, env, root_);
 		free_map(*env);
 		btree_clear(root_);
 		exit(rcode);
@@ -174,7 +172,7 @@ int	run_heredoc_inredir(t_btree *ast_node, t_map **env, t_btree *root_)
 	i = fork();
 	if (i == 0)
 	{
-		rcode = collapse(ast_node, env, root_);
+		rcode = collapse(ast_node->left, env, root_);
 		free_map(*env);
 		btree_clear(root_);
 		exit(rcode);
@@ -234,6 +232,14 @@ int	collapse_heredoc(t_btree *ast_node, t_map **env, t_btree *root_)
 		ast_node->data = ft_lstnew_expand(file, T_ARGS);
 		if (!get_one_heredoc(file, delim, pack(NULL, env, root_)))
 			return (0);
+		return (collapse_heredoc(ast_node->left, env, root_));
+	}
+	if (ast_node->token == T_LEFTHRDC)
+	{
+		last = T_LEFTHRDC;
+		file = heredoc_path();
+		delim = get_delim(ast_node->right);
+		ast_node->data = ft_lstnew_expand(file, T_ARGS);
 		return (collapse_heredoc(ast_node->left, env, root_));
 	}
 	else

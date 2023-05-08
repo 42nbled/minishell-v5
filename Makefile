@@ -3,7 +3,7 @@ INCLUDE = include/
 SRC_DIR = srcs/
 OBJ_DIR = obj/
 CC = cc
-CFLAGS = -Wall -Werror -Wextra -I./include -g
+CFLAGS = -Wall -Werror -Wextra -I./include -g -fsanitize=address -fsanitize=undefined -fsanitize=leak
 RM = rm -f
 
 SRC_MAIN = main

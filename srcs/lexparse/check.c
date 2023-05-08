@@ -6,7 +6,7 @@
 /*   By: nbled <nbled@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:20:21 by nbled             #+#    #+#             */
-/*   Updated: 2023/05/07 20:27:49 by nbled            ###   ########.fr       */
+/*   Updated: 2023/05/08 05:15:15 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,19 +82,19 @@ t_list	*lex_check(t_list *start)
 	if (quote_check(start) == 0)
 	{
 		ft_lstclear(start);
-		last_ret(1, 1);
+		last_ret(2, 1);
 		return (NULL);
 	}
 	if (redir_check(start) == 0)
 	{
 		ft_lstclear(start);
-		last_ret(1, 1);
+		last_ret(2, 1);
 		return (NULL);
 	}
 	if (pipe_check(start) == 0)
 	{
 		ft_lstclear(start);
-		last_ret(1, 1);
+		last_ret(2, 1);
 		ft_error("syntax error near unexpected token `", "|", "'", 2);
 		return (NULL);
 	}

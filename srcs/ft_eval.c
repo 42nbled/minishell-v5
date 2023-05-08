@@ -6,7 +6,7 @@
 /*   By: nbled <nbled@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:34:55 by nbled             #+#    #+#             */
-/*   Updated: 2023/05/08 04:29:09 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/08 05:32:16 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	ft_eval(char *str, t_map **env)
 	if (!l_start)
 	{
 		free(str);
-		return (1);
+		return (last_ret(0, 0));
 	}
 	if (is_something(l_start) == 0)
 	{

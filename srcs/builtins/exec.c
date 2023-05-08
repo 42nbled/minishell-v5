@@ -6,7 +6,7 @@
 /*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 23:13:21 by cde-sede          #+#    #+#             */
-/*   Updated: 2023/05/08 03:10:45 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/08 05:58:27 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,11 +127,10 @@ int	f_exec(t_fargs *info)
 			exit(i);
 		}
 		execve(info->av[0], info->av, environ);
-		ft_error("execve: ", strerror(errno), NULL, 1);
+		ft_error("execve: ", strerror(errno), "", 1);
 		free_pack(info);
 		free_environ(environ);
 		exit(1);
 	}
-	printf("pid=%d\n", pid);
 	return (wait_exec(pid));
 }
