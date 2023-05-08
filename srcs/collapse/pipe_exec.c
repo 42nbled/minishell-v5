@@ -6,13 +6,13 @@
 /*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 22:06:31 by cde-sede          #+#    #+#             */
-/*   Updated: 2023/05/08 17:57:18 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/08 18:50:43 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	cmdpath(char **av, t_map **env)
+int	cmdpath(char **av, t_map **env)
 {
 	char	*result;
 	char	*tmp;
@@ -61,4 +61,14 @@ int	f_exec_inpipe(t_fargs *info)
 	free_pack(info);
 	execpipe_free_environ(environ);
 	return (1);
+}
+
+void	exec_free_environ(char **environ)
+{
+	int	i;
+
+	i = -1;
+	while (environ[++i])
+		free(environ[i]);
+	free(environ);
 }

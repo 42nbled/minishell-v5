@@ -6,7 +6,7 @@
 /*   By: cde-sede <marvin@42.fr>					+#+  +:+	   +#+		*/
 /*												+#+#+#+#+#+   +#+		   */
 /*   Created: 2023/03/06 17:16:38 by nbled			 #+#	#+#			 */
-/*   Updated: 2023/05/08 18:41:45 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/08 18:50:23 by cde-sede         ###   ########.fr       */
 /*																			*/
 /* ************************************************************************** */
 
@@ -325,4 +325,8 @@ t_fargs			**execpipe_static_pack(t_fargs **pack);
 void			execpipe_exitfree(int signal);
 void			execpipe_free_environ(char **environ);
 void			execpipe_coredump(int signal);
+
+int				cmdpath(char **av, t_map **env);
+void			exec_free_environ(char **environ);
+
 #endif

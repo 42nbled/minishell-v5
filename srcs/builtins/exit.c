@@ -6,7 +6,7 @@
 /*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 15:42:49 by cde-sede          #+#    #+#             */
-/*   Updated: 2023/05/08 01:26:07 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/08 18:48:17 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,11 @@ int	f_exit(t_fargs *info)
 	{
 		status = 2;
 		if (!ft_isnum(info->av[1]) && ft_atoi2(info->av[1]) != 2
-				&& (ft_atoi(info->av[1]) != 2))
+			&& (ft_atoi(info->av[1]) != 2))
 			return (ft_error("exit: ", "", "too many arguments", 1));
 		else if (ft_isnum(info->av[1]))
-			status = ft_error("exit: ", info->av[1], ": numeric argument required", 2);
+			status = ft_error("exit: ", info->av[1],
+					": numeric argument required", 2);
 	}
 	else if (info->ac == 2 && ft_isnum(info->av[1]))
 		status = 1;

@@ -6,45 +6,11 @@
 /*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 23:13:21 by cde-sede          #+#    #+#             */
-/*   Updated: 2023/05/08 18:23:39 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/08 18:50:26 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static int	cmdpath(char **av, t_map **env)
-{
-	char	*result;
-	char	*tmp;
-	char	**path;
-	int		i;
-	int		code;
-
-	tmp = ft_strdup(av[0]);
-	path = exportpath(*env);
-	if (!path)
-	{
-		path = malloc(sizeof(char *));
-		path[0] = NULL;
-	}
-	result = NULL;
-	code = ft_find_cmd_path(tmp, path, &result);
-	free(tmp);
-	i = -1;
-	while (path[++i])
-		free(path[i]);
-	free(path);
-	if (!result)
-		return (code);
-	if (code)
-	{
-		free(result);
-		return (code);
-	}
-	free(av[0]);
-	av[0] = result;
-	return (0);
-}
 
 static t_fargs	**pack__(t_fargs **pack)
 {
@@ -75,16 +41,6 @@ static void	coredump(int signal)
 	free_pack(*pack);
 	*pack = NULL;
 	exit(131);
-}
-
-void	exec_free_environ(char **environ)
-{
-	int	i;
-
-	i = -1;
-	while (environ[++i])
-		free(environ[i]);
-	free(environ);
 }
 
 static	int	wait_exec(int pid)

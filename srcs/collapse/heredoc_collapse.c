@@ -6,7 +6,7 @@
 /*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 17:25:51 by cde-sede          #+#    #+#             */
-/*   Updated: 2023/05/08 18:41:44 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/08 18:48:42 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ int	run_heredoc_inredir(t_btree *ast_node, t_map **env, t_btree *root_)
 	return (i);
 }
 
-int	collapse_heredoc_recur(t_btree *ast_node, t_map **env, t_btree *root_, int *status)
+int	collapse_heredoc_recur(t_btree *ast_node, t_map **env, t_btree *root_,
+	int *status)
 {
 	*status = 0;
 	if (ast_node->left)
@@ -67,7 +68,8 @@ int	collapse_heredoc_heredoc(t_btree *ast_node, t_map **env, t_btree *root_)
 	return (0);
 }
 
-int	collapse_heredoc_heredocchained(t_btree *ast_node, t_map **env, t_btree *root_)
+int	collapse_heredoc_heredocchained(t_btree *ast_node, t_map **env,
+	t_btree *root_)
 {
 	char			*file;
 	char			*delim;
@@ -116,7 +118,6 @@ int	precheckfile(t_btree *ast_node, t_map **env, t_btree *root_)
 	close(fd);
 	return (0);
 }
-
 
 int	collapse_heredoc(t_btree *ast_node, t_map **env, t_btree *root_)
 {
