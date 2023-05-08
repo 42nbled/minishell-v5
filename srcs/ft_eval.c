@@ -6,7 +6,7 @@
 /*   By: nbled <nbled@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:34:55 by nbled             #+#    #+#             */
-/*   Updated: 2023/05/08 08:14:38 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/08 08:39:37 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,9 +95,10 @@ int	ft_eval(char *str, t_map **env)
 		return (2);
 	}
 	//show_btree(root, 0, str);
-	collapse_heredoc(root, env, root);
-	//show_btree(root, 0, str);
 	free(str);
+	if (last_ret(collapse_heredoc(root, env, root), 1))
+		return (btree_clear(root), last_ret(0, 1));
+	//show_btree(root, 0, str);
 	error = collapse(root, env, root);
 	btree_clear(root);
 	return (error);

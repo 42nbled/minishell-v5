@@ -6,7 +6,7 @@
 /*   By: nbled <nbled@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:30:23 by nbled             #+#    #+#             */
-/*   Updated: 2023/05/08 08:13:13 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/08 08:27:23 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,10 +175,29 @@ void	ft_joinjoin(t_list *l_start)
 t_list	*ft_expand_join(t_list **l_start, char *str)
 {
 	(void)str;
+//	printf("\n----------base\n");
+//	print_list(*l_start, str);
+//	ft_joindelete(l_start, T_SQUOTE);
+//	printf("\n----------squote\n");
+//	print_list(*l_start, str);
+//	ft_joindelete(l_start, T_DQUOTE);
+//	printf("\n----------dquote\n");
+//	print_list(*l_start, str);
+//	ft_joindelete(l_start, T_ENV);
+//	printf("\n----------env\n");
+//	print_list(*l_start, str);
+//	ft_joinjoin(*l_start);
+//	printf("\n----------join\n");
+//	print_list(*l_start, str);
+//	ft_joindelete(l_start, T_WHITE);
+//	printf("\n----------white\n");
+//	print_list(*l_start, str);
+
 	ft_joindelete(l_start, T_SQUOTE);
 	ft_joindelete(l_start, T_DQUOTE);
 	ft_joindelete(l_start, T_ENV);
 	ft_joinjoin(*l_start);
 	ft_joindelete(l_start, T_WHITE);
+
 	return (ft_moveredir(*l_start));
 }

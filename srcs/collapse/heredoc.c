@@ -6,7 +6,7 @@
 /*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 18:47:11 by cde-sede          #+#    #+#             */
-/*   Updated: 2023/05/08 07:57:24 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/08 08:37:46 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,6 +254,30 @@ int	collapse_heredoc(t_btree *ast_node, t_map **env, t_btree *root_)
 		delim = get_delim(ast_node->right);
 		ast_node->data = ft_lstnew_expand(file, T_ARGS);
 		return (0);
+	}
+	else if (ast_node->token == T_RIGHTRDIR || ast_node->token == T_RAPPEND)
+	{
+		int	flags;
+
+		file = get_delim(ast_node->right);
+		flags = O_WRONLY | O_CREAT;
+		if (ast_node->token == T_RAPPEND)
+			flags |= O_APPEND;
+		else
+			flags |= O_TRUNC;
+		close(open(file, flags, 0666));
+		free(file);
+	}
+	else if (ast_node->token == T_LEFTRDIR)
+	{
+		int	fd;
+
+		file = get_delim(ast_node->right);
+		fd = open(file, O_RDONLY, 0666);
+		free(file);
+		if (fd == -1)
+			return (ft_error("open: ", strerror(errno), "", 1));
+		close(fd);
 	}
 	return (0);
 }
