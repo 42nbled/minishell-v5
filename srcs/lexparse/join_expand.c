@@ -6,7 +6,7 @@
 /*   By: nbled <nbled@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:30:23 by nbled             #+#    #+#             */
-/*   Updated: 2023/05/08 08:27:23 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/08 16:54:51 by nbled            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,9 +172,8 @@ void	ft_joinjoin(t_list *l_start)
 	}
 }
 
-t_list	*ft_expand_join(t_list **l_start, char *str)
+t_list	*ft_expand_join(t_list **l_start)
 {
-	(void)str;
 //	printf("\n----------base\n");
 //	print_list(*l_start, str);
 //	ft_joindelete(l_start, T_SQUOTE);
