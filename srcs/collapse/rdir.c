@@ -6,7 +6,7 @@
 /*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 20:10:16 by cde-sede          #+#    #+#             */
-/*   Updated: 2023/05/08 04:30:01 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/08 06:59:05 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ int	run_rdir(t_btree *ast_node, t_map **env, t_btree *root_)
 		if (ast_node->left)
 			rcode = rdirpipe(file, O_WRONLY | O_CREAT | O_TRUNC,
 				pack(ast_node->left, env, root_));
+		else
+			close(open(file, O_WRONLY | O_CREAT | O_TRUNC, 0666));
 		free(file);
 		free_map(*env);
 		btree_clear(root_);
@@ -89,6 +91,8 @@ int	run_rdir_inredir(t_btree *ast_node, t_map **env, t_btree *root_)
 		if (ast_node->left)
 			rcode = rdirpipe_inredir(file, O_WRONLY | O_CREAT | O_TRUNC,
 				pack(ast_node->left, env, root_));
+		else
+			close(open(file, O_WRONLY | O_CREAT | O_TRUNC, 0666));
 		free(file);
 		free_map(*env);
 		btree_clear(root_);
@@ -111,6 +115,8 @@ int	run_rrdir(t_btree *ast_node, t_map **env, t_btree *root_)
 		if (ast_node->left)
 			rcode = rdirpipe(file, O_WRONLY | O_CREAT | O_APPEND,
 				pack(ast_node->left, env, root_));
+		else
+			close(open(file, O_WRONLY | O_CREAT | O_APPEND, 0666));
 		free(file);
 		free_map(*env);
 		btree_clear(root_);
@@ -133,6 +139,8 @@ int	run_rrdir_inredir(t_btree *ast_node, t_map **env, t_btree *root_)
 		if (ast_node->left)
 			rcode = rdirpipe_inredir(file, O_WRONLY | O_CREAT | O_APPEND,
 				pack(ast_node->left, env, root_));
+		else
+			close(open(file, O_WRONLY | O_CREAT | O_APPEND, 0666));
 		free(file);
 		free_map(*env);
 		btree_clear(root_);

@@ -6,7 +6,7 @@
 /*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 22:06:31 by cde-sede          #+#    #+#             */
-/*   Updated: 2023/05/08 05:50:32 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/08 06:40:42 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ static void	coredump(int signal)
 	*pack = NULL;
 	exit(131);
 }
-
 
 int	f_exec_inpipe(t_fargs *info)
 {

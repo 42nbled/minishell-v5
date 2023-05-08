@@ -6,7 +6,7 @@
 /*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 13:09:21 by cde-sede          #+#    #+#             */
-/*   Updated: 2023/04/26 19:18:55 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/08 06:59:10 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,8 @@ static int	ft_cmpchr(char *str, char c)
 	if (!str || !*str)
 		return (1);
 	while (str[++i])
-	{
 		if (str[i] != c)
 			return (1);
-	}
 	return (0);
 }
 
@@ -53,11 +51,9 @@ int	f_echo(t_fargs *info)
 	if (info->ac > 1 && info->av[1][0] == '-'
 			&& !ft_cmpchr(info->av[1] + 1, 'n'))
 	{
-		while (i < info->ac && ft_strlen(info->av[i]) > 1
-			&& info->av[i][0] == '-'
-					&& ft_cmpchr(info->av[i] + 1, 'n'))
+		while (i < info->ac && ft_strlen(info->av[i]) > 1 && info->av[i][0] == '-' && !ft_cmpchr(info->av[i] + 1, 'n'))
 			i++;
-		return (echo_(info->ac, info->av, i + 1, 0));
+		return (echo_(info->ac, info->av, i, 0));
 	}
 	else if (info->ac > 1)
 		return (echo_(info->ac, info->av, i, 1));

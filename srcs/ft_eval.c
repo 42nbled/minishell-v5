@@ -6,7 +6,7 @@
 /*   By: nbled <nbled@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:34:55 by nbled             #+#    #+#             */
-/*   Updated: 2023/05/08 05:32:16 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/08 07:21:32 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,13 +95,10 @@ int	ft_eval(char *str, t_map **env)
 		return (2);
 	}
 	show_btree(root, 0, str);
-	free(str);
 	collapse_heredoc(root, env, root);
 	show_btree(root, 0, str);
+	free(str);
 	error = collapse(root, env, root);
 	btree_clear(root);
 	return (error);
 }
-
-// ls -la|grep -i "$USER"|wc -l>t2>t3>t4
-// valgrind --suppressions=valignore -s --leak-check=full --show-leak-kinds=all --track-fds=yes ./minishell
