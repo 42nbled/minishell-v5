@@ -6,7 +6,7 @@
 /*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 17:24:17 by cde-sede          #+#    #+#             */
-/*   Updated: 2023/05/08 17:33:04 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/08 18:25:25 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ char	*heredoc_path(void)
 	free(nb);
 	return (path);
 }
-
 
 t_fargs	**heredoc_static_pack(t_fargs **pack)
 {

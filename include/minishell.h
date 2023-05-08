@@ -6,7 +6,7 @@
 /*   By: cde-sede <marvin@42.fr>					+#+  +:+	   +#+		*/
 /*												+#+#+#+#+#+   +#+		   */
 /*   Created: 2023/03/06 17:16:38 by nbled			 #+#	#+#			 */
-/*   Updated: 2023/05/08 17:57:04 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/08 18:41:45 by cde-sede         ###   ########.fr       */
 /*																			*/
 /* ************************************************************************** */
 
@@ -51,11 +51,6 @@ int				get_size(char *str, int i);
 int				quote_check(t_list *tmp);
 
 // srcs/lexparse/state.c
-t_list			*state_command_right(t_list *l_start, t_btree *ast_node);
-t_list			*state_command(t_list *l_start, t_btree *ast_node);
-t_list			*state_pipe(t_list *l_start, t_btree *ast_node);
-
-// srcs/lexparse/state.c
 t_base_result	state_base(t_list *l_start, t_btree *ast_node);
 
 // srcs/lexparse/join_expand.c
@@ -68,7 +63,7 @@ void			ft_move(t_list **pile_a, t_list **l_start);
 t_list			*ft_moveredir(t_list *l_start);
 
 // srcs/lexparse/join_expand.c
-void			ft_joinjoin(t_list *l_start);
+void			ft_joinjoin(t_list *l_start, t_list *ptr);
 t_list			*ft_expand_join(t_list **l_start);
 
 // srcs/lexparse/join_expand.c

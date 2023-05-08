@@ -6,7 +6,7 @@
 /*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 18:01:18 by cde-sede          #+#    #+#             */
-/*   Updated: 2023/05/08 18:03:21 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/08 18:45:13 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,21 +47,21 @@ int	run_command(t_btree *ast_node, t_map **env, t_btree *root_)
 		return (free(info), 0);
 	i = getfpos(info->av[0]);
 	if (i == 0)
-		return (free_ac(info), free(info), f_exec(info));
+		return (i = f_exec(info), free_ac(info), free(info), i);
 	if (i == 1)
-		return (free_ac(info), free(info), f_echo(info));
+		return (i = f_echo(info), free_ac(info), free(info), i);
 	if (i == 2)
-		return (free_ac(info), free(info), f_cd(info));
+		return (i = f_cd(info), free_ac(info), free(info), i);
 	if (i == 3)
-		return (free_ac(info), free(info), f_pwd(info));
+		return (i = f_pwd(info), free_ac(info), free(info), i);
 	if (i == 4)
-		return (free_ac(info), free(info), f_env(info));
+		return (i = f_env(info), free_ac(info), free(info), i);
 	if (i == 5)
-		return (free_ac(info), free(info), f_exit(info));
+		return (i = f_exit(info), free_ac(info), free(info), i);
 	if (i == 6)
-		return (free_ac(info), free(info), f_unset(info));
+		return (i = f_unset(info), free_ac(info), free(info), i);
 	if (i == 7)
-		return (free_ac(info), free(info), f_export(info));
+		return (i = f_export(info), free_ac(info), free(info), i);
 	return (free_ac(info), free(info), 1);
 }
 
@@ -75,20 +75,20 @@ int	run_command_inpipe(t_btree *ast_node, t_map **env, t_btree *root_)
 		return (free(info), 0);
 	i = getfpos(info->av[0]);
 	if (i == 0)
-		return (free_ac(info), free(info), f_exec_inpipe(info));
+		return (i = f_exec_inpipe(info), free_ac(info), free(info), i);
 	if (i == 1)
-		return (free_ac(info), free(info), f_echo(info));
+		return (i = f_echo(info), free_ac(info), free(info), i);
 	if (i == 2)
-		return (free_ac(info), free(info), f_cd(info));
+		return (i = f_cd(info), free_ac(info), free(info), i);
 	if (i == 3)
-		return (free_ac(info), free(info), f_pwd(info));
+		return (i = f_pwd(info), free_ac(info), free(info), i);
 	if (i == 4)
-		return (free_ac(info), free(info), f_env(info));
+		return (i = f_env(info), free_ac(info), free(info), i);
 	if (i == 5)
-		return (free_ac(info), free(info), f_exit(info));
+		return (i = f_exit(info), free_ac(info), free(info), i);
 	if (i == 6)
-		return (free_ac(info), free(info), f_unset(info));
+		return (i = f_unset(info), free_ac(info), free(info), i);
 	if (i == 7)
-		return (free_ac(info), free(info), f_export(info));
+		return (i = f_export(info), free_ac(info), free(info), i);
 	return (free_ac(info), free(info), 1);
 }
