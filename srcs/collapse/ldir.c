@@ -6,7 +6,7 @@
 /*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 12:35:43 by cde-sede          #+#    #+#             */
-/*   Updated: 2023/05/08 06:19:45 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/08 17:11:54 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static int	ldirpipe(char *file, t_fargs *info)
 	int	rcode;
 
 	fd = open(file, O_RDONLY, 0666);
+	free(file);
 	if (fd == -1)
 		return (free_ac(info), free(info), ft_error("open: ", strerror(errno), "", 1));
 	dup2(fd, STDIN_FILENO);
@@ -49,7 +50,8 @@ int	run_ldir(t_btree *ast_node, t_map **env, t_btree *root_)
 		file = getfilename(ast_node->right);
 		if (ast_node->left)
 			rcode = ldirpipe(file, pack(ast_node->left, env, root_));
-		free(file);
+		else
+			free(file);
 		free_map(*env);
 		btree_clear(root_);
 		exit(rcode);
@@ -85,7 +87,8 @@ int	run_ldir_inredir(t_btree *ast_node, t_map **env, t_btree *root_)
 		file = getfilename(ast_node->right);
 		if (ast_node->left)
 			rcode = ldirpipe_inredir(file, pack(ast_node->left, env, root_));
-		free(file);
+		else
+			free(file);
 		free_map(*env);
 		btree_clear(root_);
 		exit(rcode);
