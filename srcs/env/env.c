@@ -6,7 +6,7 @@
 /*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 02:31:42 by cde-sede          #+#    #+#             */
-/*   Updated: 2023/04/26 20:57:56 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/08 01:28:02 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ char	**export(t_map *e)
 		r[i++] = ft_jointhree(n->key, "=", n->value);
 		n = n->next;
 	}
-	r[i] = NULL;
+	if (r)
+		r[i] = NULL;
 	return (r);
 }

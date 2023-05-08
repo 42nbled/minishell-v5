@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*																			*/
 /*														:::	  ::::::::   */
-/*   minishell.h										:+:	  :+:	:+:   */
+/*   minishell.h                                        :+:      :+:    :+:   */
 /*													+:+ +:+		 +:+	 */
 /*   By: cde-sede <marvin@42.fr>					+#+  +:+	   +#+		*/
 /*												+#+#+#+#+#+   +#+		   */
 /*   Created: 2023/03/06 17:16:38 by nbled			 #+#	#+#			 */
-/*   Updated: 2023/04/12 08:54:26 by cde-sede		 ###   ########.fr	   */
+/*   Updated: 2023/05/08 04:02:20 by cde-sede         ###   ########.fr       */
 /*																			*/
 /* ************************************************************************** */
 
@@ -105,6 +105,8 @@ int				run_ldir_inredir(t_btree *ast_node,
 int				run_heredoc(t_btree *ast_node, t_map **env, t_btree *root_);
 int				run_heredoc_inredir(t_btree *ast_node,
 					t_map **env, t_btree *root_);
+int				collapse_heredoc(t_btree *ast_node, t_map **env,
+					t_btree *root_);
 
 // srcs/collapse/path.c
 int				ft_find_cmd_path(char *cmd, char **path, char **result);
@@ -154,12 +156,12 @@ int				extract_key(char *s);
 char			*extract_value(char *s, t_map *env);
 
 // srcs/env/functions.c
-int				set_env(char *key, char *value, t_map *env);
+int				set_env(char *key, char *value, t_map **env);
 char			*get_env(char *key, t_map *env);
 void			show_env(t_map *env);
 
 // srcs/env/shlvl.c
-void			setshlvl(t_map *env);
+void			setshlvl(t_map **env);
 
 // srcs/env/str.c
 
@@ -206,7 +208,7 @@ t_list			*ft_expand(t_list *l_start, char *str, t_map **env);
 
 // srcs/prompt.c
 char			*pwdcolor(int ret);
-char			*get_prompt(int ret);
+char			*get_prompt(int ret, t_map **env);
 
 // utils/ft_atoi.c
 int				ft_atoi(const char *nptr);

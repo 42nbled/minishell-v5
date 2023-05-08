@@ -6,7 +6,7 @@
 /*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 13:21:10 by cde-sede          #+#    #+#             */
-/*   Updated: 2023/04/22 13:21:10 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/07 21:42:53 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static void	replace_pwd(char *key, t_map **env)
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
 		return ;
-	set_env(key, cwd, *env);
+	set_env(key, cwd, env);
 	free(cwd);
 }
 
@@ -45,7 +45,7 @@ static int	fromhome(t_map **env)
 	if (home && chdir(home))
 		return (ft_error("cd: HOME not set", "", "", 1));
 	else
-		set_env("PWD", home, *env);
+		set_env("PWD", home, env);
 	return (0);
 }
 

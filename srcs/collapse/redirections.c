@@ -6,7 +6,7 @@
 /*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 20:00:02 by cde-sede          #+#    #+#             */
-/*   Updated: 2023/04/22 20:00:02 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/08 01:45:29 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static int	closewait(int pid)
 {
 	int	status;
 
+	status = 0;
 	if (waitpid(pid, &status, 0) == -1)
 		return (1);
 	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
@@ -46,12 +47,14 @@ int	run_redir(t_btree *ast_node, t_map **env, t_btree *root_, t_token *last)
 		return (run_redir_inredir(ast_node, env, root_));
 	if (ast_node->token == T_LEFTRDIR)
 		pid = run_ldir(ast_node, env, root_);
-	if (ast_node->token == T_RIGHTRDIR)
+	else if (ast_node->token == T_RIGHTRDIR)
 		pid = run_rdir(ast_node, env, root_);
-	if (ast_node->token == T_RAPPEND)
+	else if (ast_node->token == T_RAPPEND)
 		pid = run_rrdir(ast_node, env, root_);
-	if (ast_node->token == T_LEFTHRDC)
+	else if (ast_node->token == T_LEFTHRDC)
 		pid = run_heredoc(ast_node, env, root_);
+	else
+		return (1);
 	return (closewait(pid));
 }
 

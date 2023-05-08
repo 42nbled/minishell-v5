@@ -6,7 +6,7 @@
 /*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 17:27:50 by cde-sede          #+#    #+#             */
-/*   Updated: 2023/04/22 17:27:50 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/08 01:43:50 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	dellink(char *key, t_map **env)
 	t_map	*prev;
 
 	tmp = *env;
-	tmp = *env;
+	prev = NULL;
 	if (tmp != NULL && !ft_strcmp(tmp->key, key))
 	{
 		*env = tmp->next;
@@ -32,7 +32,8 @@ static void	dellink(char *key, t_map **env)
 	}
 	if (tmp == NULL)
 		return ;
-	prev->next = tmp->next;
+	if (prev)
+		prev->next = tmp->next;
 	envfreeone(tmp);
 }
 

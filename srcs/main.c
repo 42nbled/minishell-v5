@@ -6,7 +6,7 @@
 /*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 17:16:29 by nbled             #+#    #+#             */
-/*   Updated: 2023/05/07 01:26:49 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/08 04:01:39 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	routine(t_map **env)
 	{
 		signal(SIGINT, handle_sigint);
 		signal(SIGQUIT, SIG_IGN);
-		prompt = get_prompt(last_ret(0, 0));
+		prompt = get_prompt(last_ret(0, 0), env);
 		str = readline(prompt);
 		free(prompt);
 		if (!str)
@@ -68,7 +68,7 @@ int	main(int ac, char **av, char **env)
 	}
 	else
 		e = load_env(env);
-	setshlvl(e);
+	setshlvl(&e);
 	last_ret(0, 1);
 	return (routine(&e));
 }

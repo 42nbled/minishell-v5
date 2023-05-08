@@ -6,28 +6,56 @@
 /*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 20:10:16 by cde-sede          #+#    #+#             */
-/*   Updated: 2023/04/26 23:42:33 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/08 04:30:01 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*getfilename(t_btree *node, t_map **env, t_btree *root_)
+static char	*getfilename(t_btree *node)
 {
 	char	*file;
-	t_fargs	*info;
 
-	info = pack(node->right, env, root_);
-	file = ft_strdup(info->av[info->ac - 1]);
+	file = ft_strdup(((t_list*)node->left->data)->str);
+	return (file);
+}
+
+static int	rdirpipe(char *file, int flags, t_fargs *info)
+{
+	int	fd;
+	int	rcode;
+
+	fd = open(file, flags, 0666);
+	if (fd == -1)
+		return (free_ac(info), free(info),
+			ft_error("open: ", strerror(errno), "", 1));
+	dup2(fd, STDOUT_FILENO);
+	close(fd);
+	rcode = collapse(info->ast_node, info->env, info->root_);
 	free_ac(info);
 	free(info);
-	return (file);
+	return (rcode);
+}
+
+static int	rdirpipe_inredir(char *file, int flags, t_fargs *info)
+{
+	int	fd;
+	int	rcode;
+
+	fd = open(file, flags, 0666);
+	if (fd == -1)
+		return (free_ac(info), free(info),
+			ft_error("open: ", strerror(errno), "", 1));
+	close(fd);
+	rcode = collapse(info->ast_node, info->env, info->root_);
+	free_ac(info);
+	free(info);
+	return (rcode);
 }
 
 int	run_rdir(t_btree *ast_node, t_map **env, t_btree *root_)
 {
 	int		i;
-	int		fd;
 	char	*file;
 	int		rcode;
 
@@ -35,13 +63,11 @@ int	run_rdir(t_btree *ast_node, t_map **env, t_btree *root_)
 	if (i == 0)
 	{
 		rcode = 0;
-		file = getfilename(ast_node, env, root_);
-		fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0666);
-		free(file);
-		dup2(fd, STDOUT_FILENO);
-		close(fd);
+		file = getfilename(ast_node->right);
 		if (ast_node->left)
-			rcode = collapse(ast_node->left, env, root_);
+			rcode = rdirpipe(file, O_WRONLY | O_CREAT | O_TRUNC,
+				pack(ast_node->left, env, root_));
+		free(file);
 		free_map(*env);
 		btree_clear(root_);
 		exit(rcode);
@@ -52,7 +78,6 @@ int	run_rdir(t_btree *ast_node, t_map **env, t_btree *root_)
 int	run_rdir_inredir(t_btree *ast_node, t_map **env, t_btree *root_)
 {
 	int		i;
-	int		fd;
 	char	*file;
 	int		rcode;
 
@@ -60,12 +85,11 @@ int	run_rdir_inredir(t_btree *ast_node, t_map **env, t_btree *root_)
 	if (i == 0)
 	{
 		rcode = 0;
-		file = getfilename(ast_node, env, root_);
-		fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0666);
-		close(fd);
-		free(file);
+		file = getfilename(ast_node->right);
 		if (ast_node->left)
-			rcode = collapse(ast_node->left, env, root_);
+			rcode = rdirpipe_inredir(file, O_WRONLY | O_CREAT | O_TRUNC,
+				pack(ast_node->left, env, root_));
+		free(file);
 		free_map(*env);
 		btree_clear(root_);
 		exit(rcode);
@@ -76,7 +100,6 @@ int	run_rdir_inredir(t_btree *ast_node, t_map **env, t_btree *root_)
 int	run_rrdir(t_btree *ast_node, t_map **env, t_btree *root_)
 {
 	int		i;
-	int		fd;
 	char	*file;
 	int		rcode;
 
@@ -84,13 +107,11 @@ int	run_rrdir(t_btree *ast_node, t_map **env, t_btree *root_)
 	if (i == 0)
 	{
 		rcode = 0;
-		file = getfilename(ast_node, env, root_);
-		fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0666);
-		free(file);
-		dup2(fd, STDOUT_FILENO);
-		close(fd);
+		file = getfilename(ast_node->right);
 		if (ast_node->left)
-			rcode = collapse(ast_node->left, env, root_);
+			rcode = rdirpipe(file, O_WRONLY | O_CREAT | O_APPEND,
+				pack(ast_node->left, env, root_));
+		free(file);
 		free_map(*env);
 		btree_clear(root_);
 		exit(rcode);
@@ -101,7 +122,6 @@ int	run_rrdir(t_btree *ast_node, t_map **env, t_btree *root_)
 int	run_rrdir_inredir(t_btree *ast_node, t_map **env, t_btree *root_)
 {
 	int		i;
-	int		fd;
 	char	*file;
 	int		rcode;
 
@@ -109,12 +129,11 @@ int	run_rrdir_inredir(t_btree *ast_node, t_map **env, t_btree *root_)
 	if (i == 0)
 	{
 		rcode = 0;
-		file = getfilename(ast_node, env, root_);
-		fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0666);
-		free(file);
-		close(fd);
+		file = getfilename(ast_node->right);
 		if (ast_node->left)
-			rcode = collapse(ast_node->left, env, root_);
+			rcode = rdirpipe_inredir(file, O_WRONLY | O_CREAT | O_APPEND,
+				pack(ast_node->left, env, root_));
+		free(file);
 		free_map(*env);
 		btree_clear(root_);
 		exit(rcode);

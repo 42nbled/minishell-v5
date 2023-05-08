@@ -6,7 +6,7 @@
 /*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 23:13:21 by cde-sede          #+#    #+#             */
-/*   Updated: 2023/05/07 01:34:47 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/08 03:10:45 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int	cmdpath(char **av, t_map **env)
 		free(path[i]);
 	free(path);
 	if (!result)
-		return (1);
+		return (code);
 	if (code)
 	{
 		free(result);
@@ -66,6 +66,17 @@ static void	exitfree(int signal)
 	exit(130);
 }
 
+static void	coredump(int signal)
+{
+	t_fargs	**pack;
+
+	(void)signal;
+	pack = pack__(NULL);
+	free_pack(*pack);
+	*pack = NULL;
+	exit(131);
+}
+
 static void	free_environ(char **environ)
 {
 	int	i;
@@ -85,14 +96,14 @@ static	int	wait_exec(int pid)
 	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
 		return (130);
 	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
-		return (131);
+		return (ft_error("core dump", "", "", 131));
 	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGSEGV)
 		return (ft_error("segmentation fault", "", "", 139));
 	else if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	else
 		return (status);
-	return (0);
+	return (1);
 }
 
 int	f_exec(t_fargs *info)
@@ -106,7 +117,7 @@ int	f_exec(t_fargs *info)
 	if (pid == 0)
 	{
 		signal(SIGINT, exitfree);
-		signal(SIGQUIT, SIG_IGN);
+		signal(SIGQUIT, coredump);
 		environ = export(*(info->env));
 		i = cmdpath(info->av, info->env);
 		if (i)
@@ -119,8 +130,8 @@ int	f_exec(t_fargs *info)
 		ft_error("execve: ", strerror(errno), NULL, 1);
 		free_pack(info);
 		free_environ(environ);
-		i = -1;
 		exit(1);
 	}
+	printf("pid=%d\n", pid);
 	return (wait_exec(pid));
 }

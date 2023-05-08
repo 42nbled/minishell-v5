@@ -6,7 +6,7 @@
 /*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 11:46:50 by cde-sede          #+#    #+#             */
-/*   Updated: 2023/04/23 11:46:50 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/07 21:50:34 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static void	export_addkey(char *av, int join, t_map **env)
 		value = ft_strjoin(get_env(key, *env), value);
 		free(tmp);
 	}
-	set_env(key, value, *env);
+	set_env(key, value, env);
 	free(key);
 	free(value);
 }

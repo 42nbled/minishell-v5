@@ -6,20 +6,25 @@
 /*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 02:44:32 by cde-sede          #+#    #+#             */
-/*   Updated: 2023/04/26 19:18:56 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/07 22:00:12 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	set_env(char *key, char *value, t_map *env)
+int	set_env(char *key, char *value, t_map **env)
 {
 	t_map	*e;
 	t_map	*prev;
 
 	if (!key || ft_strlen(key) == 0)
 		return (1);
-	e = env;
+	e = *env;
+	if (!e)
+	{
+		*env = map_new(key, value);
+		return (0);
+	}
 	while (e != NULL && ft_strcmp(e->key, key))
 	{
 		prev = e;

@@ -6,7 +6,7 @@
 /*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 21:12:00 by cde-sede          #+#    #+#             */
-/*   Updated: 2023/04/26 21:29:43 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/08 01:48:15 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ static int	ft_try_path(char *cmd, char **path, char **result)
 	if (!path || !*path)
 		return (0);
 	joinpath(*path, cmd, result);
+	if (!*result)
+		return (0);
 	if (!access(*result, F_OK | X_OK))
 		return (1);
 	free(*result);
@@ -42,7 +44,7 @@ static int	ft_check_absolute_relative_path(char *cmd)
 	if (!access(cmd, F_OK | X_OK))
 		return (0);
 	ft_error(cmd, ": ", strerror(errno), 1);
-	return (127);
+	return (126);
 }
 
 int	ft_find_cmd_path(char *cmd, char **path, char **result)
@@ -57,6 +59,7 @@ int	ft_find_cmd_path(char *cmd, char **path, char **result)
 	else
 	{
 		free(*result);
+		*result = NULL;
 		if (!*cmd || !ft_try_path(cmd, path, result))
 			return (ft_error(cmd, ": command not found", "", 127));
 	}

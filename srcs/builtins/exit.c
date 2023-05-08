@@ -6,7 +6,7 @@
 /*   By: cde-sede <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 15:42:49 by cde-sede          #+#    #+#             */
-/*   Updated: 2023/04/22 15:42:49 by cde-sede         ###   ########.fr       */
+/*   Updated: 2023/05/08 01:26:07 by cde-sede         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int	ft_isnum(char *str)
 
 	i = 0;
 	if (!*str)
-		return (ft_error("exit: ", str, " numeric argument required", 1));
+		return (ft_error("exit: ", str, ": numeric argument required", 1));
 	if (str[i] == '+' || str[i] == '-')
 		i++;
 	while (ft_isdigit(str[i]))
@@ -29,16 +29,16 @@ static int	ft_isnum(char *str)
 	if (str[i] == '\0')
 		return (0);
 	else
-		return (ft_error("exit: ", str, " numeric argument required", 1));
+		return (ft_error("exit: ", str, ": numeric argument required", 1));
 	return (1);
 }
 
 static long	result_check(long result, int sign, int over, char *nptr)
 {
 	if ((result > LONG_MAX && sign == 1) || over == 1)
-		return (ft_error("exit: ", nptr, " numeric argument required", 2));
+		return (ft_error("exit: ", nptr, ": numeric argument required", 2));
 	if ((long unsigned)result > LONG_MIN && sign == -1)
-		return (ft_error("exit: ", nptr, " numeric argument required", 2));
+		return (ft_error("exit: ", nptr, ": numeric argument required", 2));
 	return (result * sign);
 }
 
@@ -74,9 +74,16 @@ int	f_exit(t_fargs *info)
 
 	ft_putstr_fd("exit\n", 2);
 	if (info->ac > 2)
-		return (ft_error("exit: ", "", " too many arguments", 1));
-	else if (info->ac == 2 && ft_isnum(info->av[1]))
+	{
 		status = 2;
+		if (!ft_isnum(info->av[1]) && ft_atoi2(info->av[1]) != 2
+				&& (ft_atoi(info->av[1]) != 2))
+			return (ft_error("exit: ", "", "too many arguments", 1));
+		else if (ft_isnum(info->av[1]))
+			status = ft_error("exit: ", info->av[1], ": numeric argument required", 2);
+	}
+	else if (info->ac == 2 && ft_isnum(info->av[1]))
+		status = 1;
 	else if (info->ac == 2 && !ft_isnum(info->av[1]))
 		status = ft_atoi2(info->av[1]);
 	else
